@@ -1,0 +1,52 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		<modelVersion>4.0.0</modelVersion>
+		<parent>
+				<groupId>com.polopoly.sites.greenfieldtimes-example</groupId>
+				<artifactId>top</artifactId>
+				<version>10.11.0-SNAPSHOT</version>
+		</parent>
+		
+		<groupId>com.atex</groupId>
+		<artifactId>module-hseries</artifactId>
+		<version>10.11.0-SNAPSHOT</version>
+		<name>module-hseries</name>
+
+		<dependencies>
+				<dependency>
+						<groupId>com.polopoly</groupId>
+						<artifactId>polopoly</artifactId>
+						<version>${polopoly.version}</version>
+						<type>jar</type>
+				</dependency>
+
+				<dependency>
+						<groupId>com.polopoly.sites.greenfieldtimes-example</groupId>
+						<artifactId>greenfieldtimes</artifactId>
+						<version>${project.version}</version>
+						<type>jar</type>
+				</dependency>
+				<dependency>
+						<groupId>com.polopoly.sites.greenfieldtimes-example</groupId>
+						<artifactId>module-adam</artifactId>
+						<version>10.11.0-SNAPSHOT</version>
+				</dependency>
+		</dependencies>
+
+		<build>
+				<plugins>
+						<plugin>
+								<groupId>com.polopoly.extensions</groupId>
+								<artifactId>p-maven-plugin</artifactId>
+								<version>${polopoly.version}</version>
+								<executions>
+										<execution>
+												<goals>
+														<goal>process-aspect-annotation</goal>
+														<goal>pack</goal>
+												</goals>
+										</execution>
+								</executions>
+						</plugin>
+				</plugins>
+		</build>
+</project>

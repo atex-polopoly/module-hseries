@@ -1,0 +1,107 @@
+package example.hermes.composer;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+import com.atex.onecms.content.ContentManager;
+import com.atex.onecms.content.ContentResult;
+import com.atex.onecms.content.ContentWrite;
+import com.atex.onecms.content.Subject;
+import com.atex.onecms.content.aspects.Aspect;
+import com.atex.onecms.content.aspects.annotations.AspectDefinition;
+import com.atex.onecms.content.mapping.ContentComposer;
+import com.atex.onecms.content.mapping.Context;
+import com.atex.onecms.content.mapping.Request;
+
+import example.greenfieldtimes.adapter.ImageResourceBean;
+import example.hermes.mappings.HermesConstants;
+import example.hermes.mappings.HermesElement;
+import example.hermes.mappings.HermesElementAspect;
+import example.hermes.mappings.HermesTypesEnum;
+
+public class ImageHermesComposer implements ContentComposer<ImageResourceBean, ImageResourceBean, Object>{
+
+	private static final Subject SYSTEM_SUBJECT = new Subject("98", null);
+	private static final String hermesAspectName = HermesElementAspect.class.getAnnotation(AspectDefinition.class).value()[0];
+
+	@Override
+	public ContentResult<ImageResourceBean> compose(ContentResult<ImageResourceBean> imageBeanDataResult,
+			String s, Request request, Context<Object> context) {
+
+		ImageResourceBean original = imageBeanDataResult.getContent().getContentData();
+
+
+		ContentResult<ImageResourceBean> res = new ContentResult<ImageResourceBean>(imageBeanDataResult, original);
+
+		try{
+			ContentManager cm = context.getContentManager();
+
+			HermesElementAspect hermesElementAspect = null;
+
+			/*
+			 *  variant: hermesStory
+			 */
+			if(s.equals("hermes")){
+
+				/*
+				 * create aspects for hermes
+				 * 
+				 */
+
+				// if(imageBeanDataResult.getContent().getAspect(hermesAspectName) == null){
+				hermesElementAspect = new HermesElementAspect();
+
+				ArrayList<HermesElement> hermesElements = hermesElementAspect.getElements();
+
+				/*
+				 * Start Polopoly To Hermes Mapping
+				 */
+				String hermesDataType = "NewsRoom";
+				HermesElement imageElement = new HermesElement("image", HermesTypesEnum.IMAGE.getValue(), HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType);
+				imageElement.getMetadata().put("WEB/AUTHOR", original.getByline());
+				hermesElements.add(imageElement);
+
+				if(original.getDescription()!= null && original.getDescription().trim().length() > 0)
+					hermesElements.add(new HermesElement("description", HermesTypesEnum.CAPTION.getValue(), HermesConstants.HERMES_LEVEL_TEXTS, hermesDataType));
+
+
+
+
+				/*
+				 * End Polopoly To Hermes Mapping
+				 */				
+
+
+
+				/*
+				 * Create aspects for hermes mapping
+				 */
+				ContentWrite<ImageResourceBean> cw = new ContentWrite<>(imageBeanDataResult.getContent());
+				cw.setAspect(hermesAspectName, hermesElementAspect);
+
+				// update/create only the hermesElement aspects in couchbase
+				ContentResult<ImageResourceBean> updatedAspects = cm.update(imageBeanDataResult.getContent().getId().getContentId(), cw, SYSTEM_SUBJECT);
+
+				Collection<Aspect> aspects = new ArrayList<Aspect>();	// create an empty aspects collection because the actual aspects collection is unmodifiable 
+				aspects.addAll(imageBeanDataResult.getContent().getAspects());	// add all aspects, plus hermesElements just updated
+
+				if(imageBeanDataResult.getContent().getAspect(hermesAspectName) != null)	// in case of existing hermesElements aspects clean existing
+					aspects.remove(imageBeanDataResult.getContent().getAspect(hermesAspectName));
+
+				aspects.addAll(updatedAspects.getContent().getAspects());
+				res = new ContentResult<ImageResourceBean>(res, original, aspects);
+			}
+
+
+
+
+
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
+		return res;
+
+	}
+
+}

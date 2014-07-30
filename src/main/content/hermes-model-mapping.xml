@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<batch xmlns="http://www.polopoly.com/polopoly/cm/xmlio">
+
+		<!-- IMPORTANT NOTE: leave this as clear="false" to avoid override the default mapping model used also by act -->
+		<content clear="false">
+				<metadata>
+						<contentid>
+								<major>Content</major>
+								<externalid>atex.onecms.ContentManager.DefaultConfig</externalid>
+						</contentid>
+						<input-template>
+								<externalid>com.atex.onecms.content.ContentManager.config</externalid>
+						</input-template>
+				</metadata>
+
+			
+				<component group="" name="defaultMapping">atex.onecms.ContentManager.include</component>
+
+				<component group="variantMapping" name="hermes">example.ContentManager.variant.hermes</component>
+		</content>
+		
+
+		<content>
+				<metadata>
+						<contentid>
+								<major>Content</major>
+								<externalid>example.ContentManager.variant.hermes</externalid>
+						</contentid>
+						<input-template>
+								<externalid>com.polopoly.data.Variant.config</externalid>
+						</input-template>
+				</metadata>
+				<component group="composer" name="example.dam.article.DamArticleBean">adapter.DamHermesBean.mapper</component>
+				<component group="composer" name="example.dam.image.DamImageBean">adapter.DamHermesBean.mapper</component> 
+				<component group="composer" name="example.greenfieldtimes.adapter.ArticleBean">adapter.StandardArticleHermesBean.mapper</component>
+				<component group="composer" name="example.greenfieldtimes.adapter.ImageResourceBean">adapter.ImageHermesBean.mapper</component>
+		</content>
+		
+		
+		<content>
+				<metadata>
+						<contentid>
+								<major>Content</major>
+								<externalid>adapter.DamHermesBean.mapper</externalid>
+						</contentid>
+						<input-template>
+								<externalid>p.model.Pojo</externalid>
+						</input-template>
+				</metadata>
+				<component group="model" name="modelType">com.atex.onecms.content.mapping.MappingConfigBean</component>
+				<component group="model" name="pojo">
+						{'_type' : 'com.atex.onecms.content.mapping.MappingConfigBean',
+						'mapperClass':'example.hermes.composer.DamHermesComposer'
+						}
+				</component>
+		</content>
+		
+		<content>
+			<metadata>
+					<contentid>
+							<major>Content</major>
+							<externalid>adapter.StandardArticleHermesBean.mapper</externalid>
+					</contentid>
+					<input-template>
+							<externalid>p.model.Pojo</externalid>
+					</input-template>
+			</metadata>
+			<component group="model" name="modelType">com.atex.onecms.content.mapping.MappingConfigBean</component>
+			<component group="model" name="pojo">
+					{'_type' : 'com.atex.onecms.content.mapping.MappingConfigBean',
+					'mapperClass':'example.hermes.composer.StandardArticleHermesComposer'
+					}
+			</component>
+		</content>		
+	
+		<content>
+			<metadata>
+					<contentid>
+							<major>Content</major>
+							<externalid>adapter.ImageHermesBean.mapper</externalid>
+					</contentid>
+					<input-template>
+							<externalid>p.model.Pojo</externalid>
+					</input-template>
+			</metadata>
+			<component group="model" name="modelType">com.atex.onecms.content.mapping.MappingConfigBean</component>
+			<component group="model" name="pojo">
+					{'_type' : 'com.atex.onecms.content.mapping.MappingConfigBean',
+					'mapperClass':'example.hermes.composer.ImageHermesComposer'
+					}
+			</component>
+		</content>		
+		
+</batch>
