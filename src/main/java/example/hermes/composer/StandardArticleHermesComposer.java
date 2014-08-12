@@ -75,12 +75,13 @@ public class StandardArticleHermesComposer implements ContentComposer<StandardAr
 					hermesElements.add(new HermesElement("body", HermesTypesEnum.TEXT.getValue(), HermesConstants.HERMES_LEVEL_TEXTS, hermesDataType));
 					
 					
-					ArrayList<ContentId> images = (ArrayList<ContentId>)original.getResources();
-					for (ContentId contentId : images) {
-						HermesElement imageElement = new HermesElement(HermesConstants.IMAGE_PREFIX+contentId.getContentIdString(), HermesTypesEnum.IMAGE.getValue(), HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType);
-						imageElement.setResourceContentId(contentId.getContentIdString());
-						hermesElements.add(imageElement);
-					}					
+					ArrayList<ContentId> images = (ArrayList<ContentId>)original.getImages();
+                    if (images != null)
+					    for (ContentId contentId : images) {
+						    HermesElement imageElement = new HermesElement(HermesConstants.IMAGE_PREFIX+contentId.getContentIdString(), HermesTypesEnum.IMAGE.getValue(), HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType);
+						    imageElement.setResourceContentId(contentId.getContentIdString());
+						    hermesElements.add(imageElement);
+					    }
 					
 
 				}else{
@@ -92,7 +93,7 @@ public class StandardArticleHermesComposer implements ContentComposer<StandardAr
 					
 					hermesElementAspect = (HermesElementAspect)articleBeanDataResult.getContent().getAspect(hermesAspectName).getData();
 					
-					ArrayList<ContentId> images = (ArrayList<ContentId>)original.getResources();
+					ArrayList<ContentId> images = (ArrayList<ContentId>)original.getImages();
 
 					// remove images which are not part of the article anymore
 					
@@ -112,13 +113,13 @@ public class StandardArticleHermesComposer implements ContentComposer<StandardAr
 						}
 					}
 					
-					
-					for (ContentId contentId : images) {
-						if(hermesElementAspect.findElementByName(HermesConstants.IMAGE_PREFIX+contentId.getContentIdString()) == null){							
-							HermesElement imageElement = new HermesElement(HermesConstants.IMAGE_PREFIX+contentId.getContentIdString(), 
+					if (images != null)
+					    for (ContentId contentId : images) {
+						    if(hermesElementAspect.findElementByName(HermesConstants.IMAGE_PREFIX+contentId.getContentIdString()) == null){
+							    HermesElement imageElement = new HermesElement(HermesConstants.IMAGE_PREFIX+contentId.getContentIdString(),
 																HermesTypesEnum.IMAGE.getValue(), HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType);
-							imageElement.setResourceContentId(contentId.getContentIdString());
-							hermesElementAspect.getElements().add(imageElement);
+							    imageElement.setResourceContentId(contentId.getContentIdString());
+							    hermesElementAspect.getElements().add(imageElement);
 						}
 					}
 				}
