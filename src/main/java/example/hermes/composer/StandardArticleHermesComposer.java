@@ -59,7 +59,7 @@ public class StandardArticleHermesComposer implements ContentComposer<ArticleBea
 				 */
 				if(articleBeanDataResult.getContent().getAspect(hermesAspectName) == null){
 					hermesElementAspect = new HermesElementAspect();
-					
+					hermesElementAspect.setHermesContentType(HermesTypesEnum.STORY_PACKAGE.getValue());
 					
 					ArrayList<HermesElement> hermesElements = hermesElementAspect.getElements();
 					

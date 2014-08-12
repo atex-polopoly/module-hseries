@@ -37,7 +37,10 @@ public class ImageHermesComposer implements ContentComposer<ImageResourceBean, I
 			ContentManager cm = context.getContentManager();
 
 			HermesElementAspect hermesElementAspect = null;
-
+			ArrayList<HermesElement> hermesElements = null;
+			
+			String hermesDataType = "NewsRoom";
+			
 			/*
 			 *  variant: hermesStory
 			 */
@@ -48,18 +51,28 @@ public class ImageHermesComposer implements ContentComposer<ImageResourceBean, I
 				 * 
 				 */
 
-				// if(imageBeanDataResult.getContent().getAspect(hermesAspectName) == null){
-				hermesElementAspect = new HermesElementAspect();
-
-				ArrayList<HermesElement> hermesElements = hermesElementAspect.getElements();
-
 				/*
 				 * Start Polopoly To Hermes Mapping
 				 */
-				String hermesDataType = "NewsRoom";
-				HermesElement imageElement = new HermesElement("image", HermesTypesEnum.IMAGE.getValue(), HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType);
-				imageElement.getMetadata().put("WEB/AUTHOR", original.getByline());
-				hermesElements.add(imageElement);
+				if(imageBeanDataResult.getContent().getAspect(hermesAspectName) == null){
+					hermesElementAspect = new HermesElementAspect();
+					hermesElementAspect.setHermesContentType(HermesTypesEnum.IMAGE.getValue());
+
+					hermesElements = hermesElementAspect.getElements();
+
+					
+					HermesElement imageElement = new HermesElement("image", HermesTypesEnum.IMAGE.getValue(), HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType);
+					imageElement.getMetadata().put("WEB/AUTHOR", original.getByline());
+					hermesElements.add(imageElement);
+					
+					
+				}else{
+					// in case the aspect exists preserve current aspect data as hermesPk
+					hermesElementAspect = (HermesElementAspect)imageBeanDataResult.getContent().getAspect(hermesAspectName).getData();
+					hermesElements = hermesElementAspect.getElements();
+				}
+
+
 
 				if(original.getDescription()!= null && original.getDescription().trim().length() > 0)
 					hermesElements.add(new HermesElement("description", HermesTypesEnum.CAPTION.getValue(), HermesConstants.HERMES_LEVEL_TEXTS, hermesDataType));

@@ -32,8 +32,18 @@ public class HermesElementAspect {
     },
 	 */
 
-
+	private int hermesContentType;
 	private ArrayList<HermesElement> elements = new ArrayList<HermesElement>();
+
+
+	public int getHermesContentType() {
+		return hermesContentType;
+	}
+
+
+	public void setHermesContentType(int hermesContentType) {
+		this.hermesContentType = hermesContentType;
+	}
 
 
 	public HermesElementAspect() {
