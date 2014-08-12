@@ -1,8 +1,5 @@
 package example.hermes.composer;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import com.atex.onecms.content.ContentManager;
 import com.atex.onecms.content.ContentResult;
 import com.atex.onecms.content.ContentWrite;
@@ -14,27 +11,29 @@ import com.atex.onecms.content.mapping.Context;
 import com.atex.onecms.content.mapping.Request;
 import com.polopoly.cm.ContentId;
 import com.polopoly.cm.ContentIdFactory;
-
-import example.greenfieldtimes.adapter.ArticleBean;
 import example.hermes.mappings.HermesConstants;
 import example.hermes.mappings.HermesElement;
 import example.hermes.mappings.HermesElementAspect;
 import example.hermes.mappings.HermesTypesEnum;
+import ie.irishtimes.content.article.StandardArticleBean;
 
-public class StandardArticleHermesComposer implements ContentComposer<ArticleBean, ArticleBean, Object>{
+import java.util.ArrayList;
+import java.util.Collection;
+
+public class StandardArticleHermesComposer implements ContentComposer<StandardArticleBean, StandardArticleBean, Object>{
 
 	private static final Subject SYSTEM_SUBJECT = new Subject("98", null);
 	private static final String hermesAspectName = HermesElementAspect.class.getAnnotation(AspectDefinition.class).value()[0];
 	
 	
 	@Override
-	public ContentResult<ArticleBean> compose(ContentResult<ArticleBean> articleBeanDataResult,
+	public ContentResult<StandardArticleBean> compose(ContentResult<StandardArticleBean> articleBeanDataResult,
 			String s, Request request, Context<Object> context) {
 
-		ArticleBean original = articleBeanDataResult.getContent().getContentData();
+		StandardArticleBean original = articleBeanDataResult.getContent().getContentData();
 		
 
-		ContentResult<ArticleBean> res = new ContentResult<ArticleBean>(articleBeanDataResult, original);
+		ContentResult<StandardArticleBean> res = new ContentResult<StandardArticleBean>(articleBeanDataResult, original);
 
 		try{
 			ContentManager cm = context.getContentManager();
@@ -131,11 +130,11 @@ public class StandardArticleHermesComposer implements ContentComposer<ArticleBea
 				/*
 				 * Create aspects for hermes mapping
 				 */
-				ContentWrite<ArticleBean> cw = new ContentWrite<>(articleBeanDataResult.getContent());
+				ContentWrite<StandardArticleBean> cw = new ContentWrite<>(articleBeanDataResult.getContent());
 				cw.setAspect(hermesAspectName, hermesElementAspect);
 				
 				// update/create only the hermesElement aspects in couchbase
-				ContentResult<ArticleBean> updatedAspects = cm.update(articleBeanDataResult.getContent().getId().getContentId(), cw, SYSTEM_SUBJECT);
+				ContentResult<StandardArticleBean> updatedAspects = cm.update(articleBeanDataResult.getContent().getId().getContentId(), cw, SYSTEM_SUBJECT);
 				
 				Collection<Aspect> aspects = new ArrayList<Aspect>();	// create an empty aspects collection because the actual aspects collection is unmodifiable 
 				aspects.addAll(articleBeanDataResult.getContent().getAspects());	// add all aspects, plus hermesElements just updated
@@ -144,7 +143,7 @@ public class StandardArticleHermesComposer implements ContentComposer<ArticleBea
 					aspects.remove(articleBeanDataResult.getContent().getAspect(hermesAspectName));
 				
 				aspects.addAll(updatedAspects.getContent().getAspects());
-				res = new ContentResult<ArticleBean>(res, original, aspects);
+				res = new ContentResult<StandardArticleBean>(res, original, aspects);
 		
 			}
 
