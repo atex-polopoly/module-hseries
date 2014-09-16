@@ -32,7 +32,7 @@
 				</metadata>
 				<component group="composer" name="example.dam.article.DamArticleBean">adapter.DamHermesBean.mapper</component>
 				<component group="composer" name="example.dam.image.DamImageBean">adapter.DamHermesBean.mapper</component> 
-				<component group="composer" name="example.greenfieldtimes.adapter.ArticleBean">adapter.StandardArticleHermesBean.mapper</component>
+				<component group="composer" name="com.atex.standard.article.ArticleBean">adapter.StandardArticleHermesBean.mapper</component>
 				<component group="composer" name="example.greenfieldtimes.adapter.ImageResourceBean">adapter.ImageHermesBean.mapper</component>
 		</content>
 		

@@ -12,10 +12,10 @@ import com.atex.onecms.content.aspects.annotations.AspectDefinition;
 import com.atex.onecms.content.mapping.ContentComposer;
 import com.atex.onecms.content.mapping.Context;
 import com.atex.onecms.content.mapping.Request;
+import com.atex.standard.article.ArticleBean;
 import com.polopoly.cm.ContentId;
 import com.polopoly.cm.ContentIdFactory;
 
-import example.greenfieldtimes.adapter.ArticleBean;
 import example.hermes.mappings.HermesConstants;
 import example.hermes.mappings.HermesElement;
 import example.hermes.mappings.HermesElementAspect;
@@ -65,7 +65,7 @@ public class StandardArticleHermesComposer implements ContentComposer<ArticleBea
 					
 					
 					HermesElement spElement = new HermesElement("article", HermesTypesEnum.STORY_PACKAGE.getValue(), HermesConstants.HERMES_LEVEL_SP, hermesDataType);
-					spElement.getMetadata().put("WEB/AUTHOR", original.getByline());
+//					spElement.getMetadata().put("WEB/AUTHOR", original.getByline());
 					hermesElements.add(spElement);
 					
 					HermesElement titleElement = new HermesElement("title", HermesTypesEnum.HEADER.getValue(), HermesConstants.HERMES_LEVEL_TEXTS, hermesDataType);
@@ -76,7 +76,7 @@ public class StandardArticleHermesComposer implements ContentComposer<ArticleBea
 					hermesElements.add(new HermesElement("body", HermesTypesEnum.TEXT.getValue(), HermesConstants.HERMES_LEVEL_TEXTS, hermesDataType));
 					
 					
-					ArrayList<ContentId> images = (ArrayList<ContentId>)original.getResources();
+					ArrayList<ContentId> images = (ArrayList<ContentId>)original.getImages();
 					for (ContentId contentId : images) {
 						HermesElement imageElement = new HermesElement(HermesConstants.IMAGE_PREFIX+contentId.getContentIdString(), HermesTypesEnum.IMAGE.getValue(), HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType);
 						imageElement.setResourceContentId(contentId.getContentIdString());
@@ -93,7 +93,7 @@ public class StandardArticleHermesComposer implements ContentComposer<ArticleBea
 					
 					hermesElementAspect = (HermesElementAspect)articleBeanDataResult.getContent().getAspect(hermesAspectName).getData();
 					
-					ArrayList<ContentId> images = (ArrayList<ContentId>)original.getResources();
+					ArrayList<ContentId> images = (ArrayList<ContentId>)original.getImages();
 
 					// remove images which are not part of the article anymore
 					
