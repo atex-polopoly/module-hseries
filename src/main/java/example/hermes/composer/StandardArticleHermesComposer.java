@@ -15,25 +15,25 @@ import example.hermes.mappings.HermesConstants;
 import example.hermes.mappings.HermesElement;
 import example.hermes.mappings.HermesElementAspect;
 import example.hermes.mappings.HermesTypesEnum;
-import ie.irishtimes.content.article.StandardArticleBean;
+import ie.irishtimes.content.article.EdgeCaseArticleBean;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class StandardArticleHermesComposer implements ContentComposer<StandardArticleBean, StandardArticleBean, Object>{
+public class StandardArticleHermesComposer implements ContentComposer<EdgeCaseArticleBean, EdgeCaseArticleBean, Object>{
 
 	private static final Subject SYSTEM_SUBJECT = new Subject("98", null);
 	private static final String hermesAspectName = HermesElementAspect.class.getAnnotation(AspectDefinition.class).value()[0];
 	
 	
 	@Override
-	public ContentResult<StandardArticleBean> compose(ContentResult<StandardArticleBean> articleBeanDataResult,
+	public ContentResult<EdgeCaseArticleBean> compose(ContentResult<EdgeCaseArticleBean> articleBeanDataResult,
 			String s, Request request, Context<Object> context) {
 
-		StandardArticleBean original = articleBeanDataResult.getContent().getContentData();
+		EdgeCaseArticleBean original = articleBeanDataResult.getContent().getContentData();
 		
 
-		ContentResult<StandardArticleBean> res = new ContentResult<StandardArticleBean>(articleBeanDataResult, original);
+		ContentResult<EdgeCaseArticleBean> res = new ContentResult<EdgeCaseArticleBean>(articleBeanDataResult, original);
 
 		try{
 			ContentManager cm = context.getContentManager();
@@ -64,7 +64,7 @@ public class StandardArticleHermesComposer implements ContentComposer<StandardAr
 					
 					
 					HermesElement spElement = new HermesElement("article", HermesTypesEnum.STORY_PACKAGE.getValue(), HermesConstants.HERMES_LEVEL_SP, hermesDataType);
-					spElement.getMetadata().put("WEB/AUTHOR", original.getByline());
+					spElement.getMetadata().put("WEB/AUTHOR", original.getAuthor());
 					hermesElements.add(spElement);
 					
 					HermesElement titleElement = new HermesElement("title", HermesTypesEnum.HEADER.getValue(), HermesConstants.HERMES_LEVEL_TEXTS, hermesDataType);
@@ -131,11 +131,11 @@ public class StandardArticleHermesComposer implements ContentComposer<StandardAr
 				/*
 				 * Create aspects for hermes mapping
 				 */
-				ContentWrite<StandardArticleBean> cw = new ContentWrite<>(articleBeanDataResult.getContent());
+				ContentWrite<EdgeCaseArticleBean> cw = new ContentWrite<>(articleBeanDataResult.getContent());
 				cw.setAspect(hermesAspectName, hermesElementAspect);
 				
 				// update/create only the hermesElement aspects in couchbase
-				ContentResult<StandardArticleBean> updatedAspects = cm.update(articleBeanDataResult.getContent().getId().getContentId(), cw, SYSTEM_SUBJECT);
+				ContentResult<EdgeCaseArticleBean> updatedAspects = cm.update(articleBeanDataResult.getContent().getId().getContentId(), cw, SYSTEM_SUBJECT);
 				
 				Collection<Aspect> aspects = new ArrayList<Aspect>();	// create an empty aspects collection because the actual aspects collection is unmodifiable 
 				aspects.addAll(articleBeanDataResult.getContent().getAspects());	// add all aspects, plus hermesElements just updated
@@ -144,7 +144,7 @@ public class StandardArticleHermesComposer implements ContentComposer<StandardAr
 					aspects.remove(articleBeanDataResult.getContent().getAspect(hermesAspectName));
 				
 				aspects.addAll(updatedAspects.getContent().getAspects());
-				res = new ContentResult<StandardArticleBean>(res, original, aspects);
+				res = new ContentResult<EdgeCaseArticleBean>(res, original, aspects);
 		
 			}
 

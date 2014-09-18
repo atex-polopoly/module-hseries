@@ -121,7 +121,8 @@
     <orderEntry type="library" name="Maven: org.quartz-scheduler:quartz-weblogic:2.1.5" level="project" />
     <orderEntry type="library" name="Maven: org.quartz-scheduler:quartz-jboss:2.1.5" level="project" />
     <orderEntry type="library" name="Maven: org.json:json_simple:1.1" level="project" />
-    <orderEntry type="library" name="Maven: com.atex:onecms-lib:contentdata:0.19.0-RC1" level="project" />
+    <orderEntry type="library" name="Maven: com.atex:onecms-lib:contentdata:1.0.0" level="project" />
+    <orderEntry type="library" name="Maven: com.atex:act:war:2.0.0" level="project" />
   </component>
 </module>
 
