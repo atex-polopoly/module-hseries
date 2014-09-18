@@ -30,7 +30,7 @@
 								<externalid>com.polopoly.data.Variant.config</externalid>
 						</input-template>
 				</metadata>
-				<component group="composer" name="ie.irishtimes.content.article.StandardArticleBean">adapter.StandardArticleHermesBean.mapper</component>
+				<component group="composer" name="ie.irishtimes.content.article.EdgeCaseArticleBean">adapter.StandardArticleHermesBean.mapper</component>
 				<!--component group="composer" name="ie.irishtimes.content.image.ImageContentDataBean">adapter.ImageHermesBean.mapper</component-->
 				<component group="composer" name="example.greenfieldtimes.adapter.ImageResourceBean">adapter.ImageHermesBean.mapper</component>
 		</content>
