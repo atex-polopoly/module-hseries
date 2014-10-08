@@ -69,7 +69,7 @@ public class StandardArticleHermesComposer implements ContentComposer<ArticleBea
 					hermesElements.add(spElement);
 					
 					HermesElement titleElement = new HermesElement("title", HermesTypesEnum.HEADER.getValue(), HermesConstants.HERMES_LEVEL_TEXTS, hermesDataType);
-					titleElement.getMetadata().put("WEB/SUBTYPE", "main title");
+					// titleElement.getMetadata().put("WEB/SUBTYPE", "main title");
 					hermesElements.add(titleElement);
 					
 					hermesElements.add(new HermesElement("lead", HermesTypesEnum.HEADER.getValue(), HermesConstants.HERMES_LEVEL_TEXTS, hermesDataType));
