@@ -101,7 +101,7 @@ public class DamHermesComposer extends CustomDamComposer implements ContentCompo
 
 					if(original instanceof DamImageBean){
 						hermesElementAspect.setHermesContentType(HermesTypesEnum.IMAGE.getValue());
-						HermesElement imageElement = new HermesElement(HermesConstants.IMAGE_PREFIX+hermesObjectBean.getContentId(), HermesTypesEnum.IMAGE.getValue(), HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType);
+						HermesElement imageElement = new HermesElement("image", HermesTypesEnum.IMAGE.getValue(), HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType);
 						imageElement.setResourceContentId(hermesObjectBean.getContentId());
 						hermesElements.add(imageElement);
 					}

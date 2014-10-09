@@ -62,7 +62,7 @@ public class ImageHermesComposer implements ContentComposer<ImageContentDataBean
 
 					
 					HermesElement imageElement = new HermesElement("image", HermesTypesEnum.IMAGE.getValue(), HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType);
-					imageElement.getMetadata().put("WEB/AUTHOR", original.getByline());
+					//imageElement.getMetadata().put("WEB/AUTHOR", original.getByline());
 					hermesElements.add(imageElement);
 					
 					
