@@ -12,6 +12,8 @@ import com.atex.onecms.content.aspects.annotations.AspectDefinition;
 import com.atex.onecms.content.mapping.ContentComposer;
 import com.atex.onecms.content.mapping.Context;
 import com.atex.onecms.content.mapping.Request;
+import com.polopoly.cm.ContentId;
+import com.polopoly.cm.ContentIdFactory;
 
 import example.dam.IDamArchiveBean;
 import example.dam.article.DamArticleBean;
@@ -108,7 +110,11 @@ public class DamHermesComposer extends CustomDamComposer implements ContentCompo
 					
 									
 
+				}else{
+					hermesElementAspect = (HermesElementAspect)damObjectBeanDataResult.getContent().getAspect(hermesAspectName).getData();	
 				}
+					
+					
 				/*
 				 * End Polopoly To Hermes Mapping
 				 */				
