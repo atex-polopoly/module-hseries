@@ -3,6 +3,10 @@ package example.hermes.composer;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.atex.onecms.app.dam.IDamArchiveBean;
+import com.atex.onecms.app.dam.article.DamArticleBean;
+import com.atex.onecms.app.dam.composer.CustomDamComposer;
+import com.atex.onecms.app.dam.image.DamImageBean;
 import com.atex.onecms.content.ContentManager;
 import com.atex.onecms.content.ContentResult;
 import com.atex.onecms.content.ContentWrite;
@@ -12,13 +16,7 @@ import com.atex.onecms.content.aspects.annotations.AspectDefinition;
 import com.atex.onecms.content.mapping.ContentComposer;
 import com.atex.onecms.content.mapping.Context;
 import com.atex.onecms.content.mapping.Request;
-import com.polopoly.cm.ContentId;
-import com.polopoly.cm.ContentIdFactory;
 
-import example.dam.IDamArchiveBean;
-import example.dam.article.DamArticleBean;
-import example.dam.composer.CustomDamComposer;
-import example.dam.image.DamImageBean;
 import example.hermes.mappings.HermesConstants;
 import example.hermes.mappings.HermesElement;
 import example.hermes.mappings.HermesElementAspect;

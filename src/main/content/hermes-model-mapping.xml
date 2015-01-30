@@ -30,8 +30,8 @@
 								<externalid>com.polopoly.data.Variant.config</externalid>
 						</input-template>
 				</metadata>
-				<component group="composer" name="example.dam.article.DamArticleBean">adapter.DamHermesBean.mapper</component>
-				<component group="composer" name="example.dam.image.DamImageBean">adapter.DamHermesBean.mapper</component> 
+				<component group="composer" name="com.atex.onecms.app.dam.article.DamArticleBean">adapter.DamHermesBean.mapper</component>
+				<component group="composer" name="com.atex.onecms.app.dam.image.DamImageBean">adapter.DamHermesBean.mapper</component> 
 				<component group="composer" name="com.atex.standard.article.ArticleBean">adapter.StandardArticleHermesBean.mapper</component>
 				<component group="composer" name="com.atex.standard.image.ImageContentDataBean">adapter.ImageHermesBean.mapper</component>
 		</content>
