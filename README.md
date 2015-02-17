@@ -4,10 +4,10 @@ module-hseries
 modules to integrate Hermes via content api
 
 This is an example demonstrating how to connect Hermes11 and Polopoly via content API. 
-This project is needed to connect both ACT and ADAM to Hermes11 sharing contents between systems.
+This project is needed to connect both ACT and dm.desk to Hermes11 sharing contents between systems.
 
 
-Use the RELEASE branch corresponding to your combination of Polopoly version and ADAM version.
+Use the RELEASE branch corresponding to your combination of Polopoly version and dm.desk version.
 
 **Please note that this example can only be used in combination with the GONG, and has only been verified to work with the corresponding release versions (of both GONG and Polopoly).**
 
@@ -29,8 +29,8 @@ Check out a release branch matching your setup:
 ~/gong $ git checkout RELEASE-POLOPOLY-10.11.0-SNAPSHOT
 ```
 
-**Currently you should checkout the master branch in order to work with ADAM and ACT**
-**If no branch matches your combination of Polopoly version and ADAM version, then that combination is not officially supported.**
+**Currently you should checkout the master branch in order to work with dm.desk and ACT**
+**If no branch matches your combination of Polopoly version and dm.desk version, then that combination is not officially supported.**
 
 ### 3. Modify the project top pom
 
