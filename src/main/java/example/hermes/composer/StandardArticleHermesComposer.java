@@ -2,6 +2,7 @@ package example.hermes.composer;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import com.atex.onecms.content.ContentManager;
 import com.atex.onecms.content.ContentResult;
@@ -61,7 +62,7 @@ public class StandardArticleHermesComposer implements ContentComposer<ArticleBea
 					hermesElementAspect = new HermesElementAspect();
 					hermesElementAspect.setHermesContentType(HermesTypesEnum.STORY_PACKAGE.getValue());
 					
-					ArrayList<HermesElement> hermesElements = hermesElementAspect.getElements();
+					List<HermesElement> hermesElements = hermesElementAspect.getElements();
 					
 					
 					HermesElement spElement = new HermesElement("article", HermesTypesEnum.STORY_PACKAGE.getValue(), HermesConstants.HERMES_LEVEL_SP, hermesDataType);
@@ -97,7 +98,7 @@ public class StandardArticleHermesComposer implements ContentComposer<ArticleBea
 
 					// remove images which are not part of the article anymore
 					
-					ArrayList<HermesElement> elements = hermesElementAspect.getElements();
+					List<HermesElement> elements = hermesElementAspect.getElements();
 				
 					for(int i=0; i< elements.size(); i++){
 				

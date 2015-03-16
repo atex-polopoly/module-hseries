@@ -1,6 +1,7 @@
 package example.hermes.mappings;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.atex.onecms.content.aspects.annotations.AspectDefinition;
 
@@ -33,7 +34,7 @@ public class HermesElementAspect {
 	 */
 
 	private int hermesContentType;
-	private ArrayList<HermesElement> elements = new ArrayList<HermesElement>();
+	private List<HermesElement> elements = new ArrayList<HermesElement>();
 
 
 	public int getHermesContentType() {
@@ -51,20 +52,20 @@ public class HermesElementAspect {
 	}
 
 
-	public ArrayList<HermesElement> getElements() {
+	public List<HermesElement> getElements() {
 		return elements;
 	}
 
 
 
-	public void setElements(ArrayList<HermesElement> elements) {
+	public void setElements(List<HermesElement> elements) {
 		this.elements = elements;
 	}
 
 
 	public HermesElement findElementByName(String name){
 	
-		ArrayList<HermesElement> elements = this.getElements();
+		List<HermesElement> elements = this.getElements();
 		
 		for(int i=0; i< elements.size(); i++){
 			HermesElement hermesElement = elements.get(i);

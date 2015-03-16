@@ -2,6 +2,7 @@ package example.hermes.composer;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import com.atex.onecms.app.dam.IDamArchiveBean;
 import com.atex.onecms.app.dam.article.DamArticleBean;
@@ -92,7 +93,7 @@ public class DamHermesComposer extends CustomDamComposer implements ContentCompo
 				if(damObjectBeanDataResult.getContent().getAspect(hermesAspectName) == null){
 					hermesElementAspect = new HermesElementAspect();
 					
-					ArrayList<HermesElement> hermesElements = hermesElementAspect.getElements();
+					List<HermesElement> hermesElements = hermesElementAspect.getElements();
 
 					if(original instanceof DamArticleBean){
 						hermesElementAspect.setHermesContentType(HermesTypesEnum.TEXT.getValue());

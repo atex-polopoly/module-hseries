@@ -2,6 +2,7 @@ package example.hermes.composer;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import com.atex.onecms.content.ContentManager;
 import com.atex.onecms.content.ContentResult;
@@ -37,7 +38,7 @@ public class ImageHermesComposer implements ContentComposer<ImageContentDataBean
 			ContentManager cm = context.getContentManager();
 
 			HermesElementAspect hermesElementAspect = null;
-			ArrayList<HermesElement> hermesElements = null;
+			List<HermesElement> hermesElements = null;
 			
 			String hermesDataType = "NewsRoom";
 			

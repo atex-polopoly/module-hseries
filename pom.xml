@@ -24,11 +24,6 @@
 						<artifactId>module-desk</artifactId>
 						<version>${desk.version}</version>
 				</dependency>
-				<dependency>
-					<groupId>com.atex.gong</groupId>
-					<artifactId>source-common</artifactId>
-					<version>1.2-SNAPSHOT</version>
-				</dependency>
 		</dependencies>
 
 		<build>
