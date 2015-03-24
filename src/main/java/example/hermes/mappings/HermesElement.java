@@ -1,6 +1,7 @@
 package example.hermes.mappings;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class HermesElement{
 	private String name;
@@ -10,7 +11,7 @@ public class HermesElement{
 	private String hermesVariant;
 	private String hermesLevelId;
 	private String resourceContentId;
-	private HashMap<String, Object> metadata = new HashMap<String, Object>();
+	private Map<String, String> metadata = new HashMap<String, String>();
 	
 	
 	
@@ -74,10 +75,10 @@ public class HermesElement{
 		this.resourceContentId = resourceContentId;
 	}
 
-	public HashMap<String, Object> getMetadata() {
+	public Map<String, String> getMetadata() {
 		return metadata;
 	}
-	public void setMetadata(HashMap<String, Object> metadata) {
+	public void setMetadata(Map<String, String> metadata) {
 		this.metadata = metadata;
 	}
 

@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.atex.onecms.app.dam.wire.DamWireImageBean;
 import com.atex.onecms.content.ContentManager;
 import com.atex.onecms.content.ContentResult;
 import com.atex.onecms.content.ContentWrite;
+import com.atex.onecms.content.ContentWriteBuilder;
 import com.atex.onecms.content.Subject;
 import com.atex.onecms.content.aspects.Aspect;
 import com.atex.onecms.content.aspects.annotations.AspectDefinition;
@@ -132,21 +134,15 @@ public class StandardArticleHermesComposer implements ContentComposer<ArticleBea
 				/*
 				 * Create aspects for hermes mapping
 				 */
-				ContentWrite<ArticleBean> cw = new ContentWrite<>(articleBeanDataResult.getContent());
-				cw.setAspect(hermesAspectName, hermesElementAspect);
+				ContentWriteBuilder<ArticleBean> cwb = new ContentWriteBuilder<ArticleBean>();
+
+				cwb.mainAspect(articleBeanDataResult.getContent().getContentAspect());
+				cwb.aspect(hermesAspectName, hermesElementAspect);
+			
+				cwb.origin(articleBeanDataResult.getContent());
+				ContentWrite<ArticleBean> content = cwb.buildUpdate();
+				res = cm.update(articleBeanDataResult.getContent().getId().getContentId(), content, SYSTEM_SUBJECT);
 				
-				// update/create only the hermesElement aspects in couchbase
-				ContentResult<ArticleBean> updatedAspects = cm.update(articleBeanDataResult.getContent().getId().getContentId(), cw, SYSTEM_SUBJECT);
-				
-				Collection<Aspect> aspects = new ArrayList<Aspect>();	// create an empty aspects collection because the actual aspects collection is unmodifiable 
-				aspects.addAll(articleBeanDataResult.getContent().getAspects());	// add all aspects, plus hermesElements just updated
-				
-				if(articleBeanDataResult.getContent().getAspect(hermesAspectName) != null)	// in case of existing hermesElements aspects clean existing
-					aspects.remove(articleBeanDataResult.getContent().getAspect(hermesAspectName));
-				
-				aspects.addAll(updatedAspects.getContent().getAspects());
-				res = new ContentResult<ArticleBean>(res, original, aspects);
-		
 			}
 
 
