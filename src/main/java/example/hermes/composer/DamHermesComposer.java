@@ -1,22 +1,19 @@
 package example.hermes.composer;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import com.atex.onecms.app.dam.IDamArchiveBean;
-import com.atex.onecms.app.dam.article.DamArticleBean;
-import com.atex.onecms.app.dam.composer.CustomDamComposer;
-import com.atex.onecms.app.dam.image.DamImageBean;
+import com.atex.onecms.content.Content;
 import com.atex.onecms.content.ContentManager;
 import com.atex.onecms.content.ContentResult;
 import com.atex.onecms.content.ContentWrite;
-import com.atex.onecms.content.Subject;
-import com.atex.onecms.content.aspects.Aspect;
+import com.atex.onecms.content.ContentWriteBuilder;
 import com.atex.onecms.content.aspects.annotations.AspectDefinition;
 import com.atex.onecms.content.mapping.ContentComposer;
 import com.atex.onecms.content.mapping.Context;
 import com.atex.onecms.content.mapping.Request;
+import com.polopoly.model.Model;
+import com.polopoly.model.ModelDomain;
+import com.polopoly.model.PojoAsModel;
 
 import example.hermes.mappings.HermesConstants;
 import example.hermes.mappings.HermesElement;
@@ -24,19 +21,24 @@ import example.hermes.mappings.HermesElementAspect;
 import example.hermes.mappings.HermesObjectBean;
 import example.hermes.mappings.HermesTypesEnum;
 
-public class DamHermesComposer extends CustomDamComposer implements ContentComposer<IDamArchiveBean, HermesObjectBean, Object>{
+public class DamHermesComposer implements ContentComposer<Object, Object, Object>{
 
-	private static final Subject SYSTEM_SUBJECT = new Subject("98", null);
+	// private static final Subject SYSTEM_SUBJECT = new Subject("98", null);
 	private static final String hermesAspectName = HermesElementAspect.class.getAnnotation(AspectDefinition.class).value()[0];
 	
 	@Override
-	public ContentResult<HermesObjectBean> compose(ContentResult<IDamArchiveBean> damObjectBeanDataResult,
+	public ContentResult<Object> compose(ContentResult<Object> damObjectBeanDataResult,
 			String s, Request request, Context<Object> context) {
 
-		IDamArchiveBean original = damObjectBeanDataResult.getContent().getContentData();
+		ModelDomain modelDomain = context.getModelDomain();
+		Content<Object>  content = damObjectBeanDataResult.getContent();
+		Model contentBean = new PojoAsModel(modelDomain, content.getContentData());
+		
+		
+		// IDamArchiveBean original = damObjectBeanDataResult.getContent().getContentData();
 		HermesObjectBean hermesObjectBean = null;
 
-		ContentResult<HermesObjectBean> res = new ContentResult<HermesObjectBean>(damObjectBeanDataResult, hermesObjectBean);
+		ContentResult<Object> res = null; // new ContentResult<Object>(damObjectBeanDataResult, hermesObjectBean);
 		
 
 		try{
@@ -50,27 +52,26 @@ public class DamHermesComposer extends CustomDamComposer implements ContentCompo
 				hermesObjectBean = new HermesObjectBean();
 				
 	            hermesObjectBean.setContentId(damObjectBeanDataResult.getContent().getId().getKey());
-	            hermesObjectBean.setName(original.getName());
+	            if(contentBean.getChild("name") != null)
+	            	hermesObjectBean.setName(contentBean.getChild("name").toString());
 	            
-	            if(original instanceof DamArticleBean){
-	            	DamArticleBean articleBean = (DamArticleBean)original;
-	            	hermesObjectBean.setText(articleBean.getBody());
-	            	hermesObjectBean.setAuthor(articleBean.getAuthor());
-	            }
-	            if(original instanceof DamImageBean){
-	            	DamImageBean imageBean = (DamImageBean)original;
-	            	hermesObjectBean.setCaption(imageBean.getDescription());
-	            	hermesObjectBean.setAuthor(imageBean.getAuthor());
+	            if(contentBean.getChild("body") != null)
+	            	hermesObjectBean.setText(contentBean.getChild("body").toString());
+	            if(contentBean.getChild("author") != null)
+	            	hermesObjectBean.setAuthor(contentBean.getChild("author").toString());
+	            if(contentBean.getChild("description") != null)
+	            	hermesObjectBean.setCaption(contentBean.getChild("description").toString());
+
 	            	
 	            	/*
 	            	 * Temporary patch for file service storage
 	            	 */
-	            	if (imageBean.getUrl()!= null && !imageBean.getUrl().contains("polopoly_fs")){						
-						imageBean.setUrl("/dam/content/file?file=" + imageBean.getUrl());
-						imageBean.setThumbUrl("/dam/content/file?file=" + imageBean.getThumbUrl());
-					}
-	            	hermesObjectBean.setFileurl(imageBean.getUrl());
-	            }
+//	            	if (imageBean.getUrl()!= null && !imageBean.getUrl().contains("polopoly_fs")){						
+//						imageBean.setUrl("/dam/content/file?file=" + imageBean.getUrl());
+//						imageBean.setThumbUrl("/dam/content/file?file=" + imageBean.getThumbUrl());
+//					}
+//	            	hermesObjectBean.setFileurl(imageBean.getUrl());
+//	            }
 	            
 	            /*
 	             * Add hermes element aspects to allow copy/paste to ACT and then import into Hermes Production 
@@ -90,17 +91,17 @@ public class DamHermesComposer extends CustomDamComposer implements ContentCompo
 				/*
 				 * Start Polopoly To Hermes Mapping
 				 */
-				if(damObjectBeanDataResult.getContent().getAspect(hermesAspectName) == null){
+				if(content.getAspect(hermesAspectName) == null){
 					hermesElementAspect = new HermesElementAspect();
 					
 					List<HermesElement> hermesElements = hermesElementAspect.getElements();
 
-					if(original instanceof DamArticleBean){
+					if(contentBean.getChild("objectType").toString().equals("article")){
 						hermesElementAspect.setHermesContentType(HermesTypesEnum.TEXT.getValue());
 						hermesElements.add(new HermesElement("body", HermesTypesEnum.TEXT.getValue(), HermesConstants.HERMES_LEVEL_TEXTS, hermesDataType));
 					}
 
-					if(original instanceof DamImageBean){
+					if(contentBean.getChild("objectType").toString().equals("image")){
 						hermesElementAspect.setHermesContentType(HermesTypesEnum.IMAGE.getValue());
 						HermesElement imageElement = new HermesElement("image", HermesTypesEnum.IMAGE.getValue(), HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType);
 						imageElement.setResourceContentId(hermesObjectBean.getContentId());
@@ -110,7 +111,7 @@ public class DamHermesComposer extends CustomDamComposer implements ContentCompo
 									
 
 				}else{
-					hermesElementAspect = (HermesElementAspect)damObjectBeanDataResult.getContent().getAspect(hermesAspectName).getData();	
+					hermesElementAspect = (HermesElementAspect)content.getAspect(hermesAspectName).getData();	
 				}
 					
 					
@@ -118,25 +119,23 @@ public class DamHermesComposer extends CustomDamComposer implements ContentCompo
 				 * End Polopoly To Hermes Mapping
 				 */				
 				
-				
 				/*
 				 * Create aspects for hermes mapping
 				 */
-				ContentWrite<IDamArchiveBean> cw = new ContentWrite<>(damObjectBeanDataResult.getContent());
-				cw.setAspect(hermesAspectName, hermesElementAspect);
+				ContentWriteBuilder<Object> cwb = new ContentWriteBuilder<Object>();
+
+				cwb.mainAspectData(hermesObjectBean);
+				cwb.aspects(content.getAspects());
+				cwb.aspect(hermesAspectName, hermesElementAspect);
+				cwb.origin(content);
 				
-				// update/create only the hermesElement aspects in couchbase
-				ContentResult<IDamArchiveBean> updatedAspects = cm.update(damObjectBeanDataResult.getContent().getId().getContentId(), cw, SYSTEM_SUBJECT);
+				ContentWrite<Object> cw = cwb.buildUpdate();
+				res =  new ContentResult<Object>(damObjectBeanDataResult, cw.getContentData(), cw.getAspects()); 
 				
-				Collection<Aspect> aspects = new ArrayList<Aspect>();	// create an empty aspects collection because the actual aspects collection is unmodifiable 
-				aspects.addAll(damObjectBeanDataResult.getContent().getAspects());	// add all aspects, plus hermesElements just updated
-				
-				if(damObjectBeanDataResult.getContent().getAspect(hermesAspectName) != null)	// in case of existing hermesElements aspects clean existing
-					aspects.remove(damObjectBeanDataResult.getContent().getAspect(hermesAspectName));
-				
-				aspects.addAll(updatedAspects.getContent().getAspects());
-				res = new ContentResult<HermesObjectBean>(damObjectBeanDataResult, hermesObjectBean, aspects);	            
-	            
+				// there is no need to really create the hermes element aspect
+				// res = cm.update(content.getId().getContentId(), cw, SYSTEM_SUBJECT);
+			
+
 	            
 			}
 

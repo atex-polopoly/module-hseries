@@ -1,38 +1,41 @@
 package example.hermes.composer;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
+import com.atex.onecms.content.Content;
 import com.atex.onecms.content.ContentManager;
 import com.atex.onecms.content.ContentResult;
 import com.atex.onecms.content.ContentWrite;
+import com.atex.onecms.content.ContentWriteBuilder;
 import com.atex.onecms.content.Subject;
-import com.atex.onecms.content.aspects.Aspect;
 import com.atex.onecms.content.aspects.annotations.AspectDefinition;
 import com.atex.onecms.content.mapping.ContentComposer;
 import com.atex.onecms.content.mapping.Context;
 import com.atex.onecms.content.mapping.Request;
-import com.atex.standard.image.ImageContentDataBean;
+import com.polopoly.model.Model;
+import com.polopoly.model.ModelDomain;
+import com.polopoly.model.PojoAsModel;
 
 import example.hermes.mappings.HermesConstants;
 import example.hermes.mappings.HermesElement;
 import example.hermes.mappings.HermesElementAspect;
 import example.hermes.mappings.HermesTypesEnum;
 
-public class ImageHermesComposer implements ContentComposer<ImageContentDataBean, ImageContentDataBean, Object>{
+public class ImageHermesComposer implements ContentComposer<Object, Object, Object>{
 
 	private static final Subject SYSTEM_SUBJECT = new Subject("98", null);
 	private static final String hermesAspectName = HermesElementAspect.class.getAnnotation(AspectDefinition.class).value()[0];
 
 	@Override
-	public ContentResult<ImageContentDataBean> compose(ContentResult<ImageContentDataBean> imageBeanDataResult,
+	public ContentResult<Object> compose(ContentResult<Object> imageBeanDataResult,
 			String s, Request request, Context<Object> context) {
 
-		ImageContentDataBean original = imageBeanDataResult.getContent().getContentData();
+		ModelDomain modelDomain = context.getModelDomain();
+		Content<Object>  content = imageBeanDataResult.getContent();
+		Model contentBean = new PojoAsModel(modelDomain, content.getContentData());
 
 
-		ContentResult<ImageContentDataBean> res = new ContentResult<ImageContentDataBean>(imageBeanDataResult, original);
+		ContentResult<Object> res = new ContentResult<Object>(imageBeanDataResult, contentBean);
 
 		try{
 			ContentManager cm = context.getContentManager();
@@ -55,7 +58,7 @@ public class ImageHermesComposer implements ContentComposer<ImageContentDataBean
 				/*
 				 * Start Polopoly To Hermes Mapping
 				 */
-				if(imageBeanDataResult.getContent().getAspect(hermesAspectName) == null){
+				if(content.getAspect(hermesAspectName) == null){
 					hermesElementAspect = new HermesElementAspect();
 					hermesElementAspect.setHermesContentType(HermesTypesEnum.IMAGE.getValue());
 
@@ -69,13 +72,13 @@ public class ImageHermesComposer implements ContentComposer<ImageContentDataBean
 					
 				}else{
 					// in case the aspect exists preserve current aspect data as hermesPk
-					hermesElementAspect = (HermesElementAspect)imageBeanDataResult.getContent().getAspect(hermesAspectName).getData();
+					hermesElementAspect = (HermesElementAspect)content.getAspect(hermesAspectName).getData();
 					hermesElements = hermesElementAspect.getElements();
 				}
 
 
 
-				if(original.getDescription()!= null && original.getDescription().trim().length() > 0)
+				if(contentBean.getChild("description")!= null && contentBean.getChild("description").toString().trim().length() > 0)
 					hermesElements.add(new HermesElement("description", HermesTypesEnum.CAPTION.getValue(), HermesConstants.HERMES_LEVEL_TEXTS, hermesDataType));
 
 
@@ -90,20 +93,15 @@ public class ImageHermesComposer implements ContentComposer<ImageContentDataBean
 				/*
 				 * Create aspects for hermes mapping
 				 */
-				ContentWrite<ImageContentDataBean> cw = new ContentWrite<>(imageBeanDataResult.getContent());
-				cw.setAspect(hermesAspectName, hermesElementAspect);
+				ContentWriteBuilder<Object> cwb = new ContentWriteBuilder<Object>();
 
-				// update/create only the hermesElement aspects in couchbase
-				ContentResult<ImageContentDataBean> updatedAspects = cm.update(imageBeanDataResult.getContent().getId().getContentId(), cw, SYSTEM_SUBJECT);
+				cwb.mainAspect(content.getContentAspect());
+				cwb.aspect(hermesAspectName, hermesElementAspect);
 
-				Collection<Aspect> aspects = new ArrayList<Aspect>();	// create an empty aspects collection because the actual aspects collection is unmodifiable 
-				aspects.addAll(imageBeanDataResult.getContent().getAspects());	// add all aspects, plus hermesElements just updated
+				cwb.origin(content);
+				ContentWrite<Object> cw = cwb.buildUpdate();
+				res = cm.update(content.getId().getContentId(), cw, SYSTEM_SUBJECT);
 
-				if(imageBeanDataResult.getContent().getAspect(hermesAspectName) != null)	// in case of existing hermesElements aspects clean existing
-					aspects.remove(imageBeanDataResult.getContent().getAspect(hermesAspectName));
-
-				aspects.addAll(updatedAspects.getContent().getAspects());
-				res = new ContentResult<ImageContentDataBean>(res, original, aspects);
 			}
 
 
