@@ -61,9 +61,9 @@ Modify the parent version in the *module-hseries/pom.xml* file in order to match
 ...
 ```
 
-### 5. Add artifact to the server-onecms
+### 5. Add artifact to the source-common
 
-Add a dependency to the example artifact in the pom.xml file of the Data API Server (server-data-api/pom.xml):
+Add a dependency to the example artifact in the pom.xml file of the Data API Server (source-common/pom.xml):
 
 ```xml
 ...
@@ -73,6 +73,24 @@ Add a dependency to the example artifact in the pom.xml file of the Data API Ser
       <artifactId>module-hseries</artifactId>
       <groupId>com.atex</groupId>
       <version>${project.version}</version>
+    </dependency>
+  ...
+</dependencies>
+...
+```
+
+and change the dependency to polopoly jar from "runtime" to compile
+
+```xml
+...
+<dependencies>
+  ...
+    <dependency>
+      <groupId>com.polopoly</groupId>
+      <artifactId>polopoly</artifactId>
+      <version>${polopoly.version}</version>
+      <scope>compile</scope>
+      <type>jar</type>
     </dependency>
   ...
 </dependencies>
