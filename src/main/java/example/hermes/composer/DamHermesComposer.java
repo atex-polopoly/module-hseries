@@ -7,10 +7,12 @@ import com.atex.onecms.content.ContentManager;
 import com.atex.onecms.content.ContentResult;
 import com.atex.onecms.content.ContentWrite;
 import com.atex.onecms.content.ContentWriteBuilder;
+import com.atex.onecms.content.FilesAspectBean;
 import com.atex.onecms.content.aspects.annotations.AspectDefinition;
 import com.atex.onecms.content.mapping.ContentComposer;
 import com.atex.onecms.content.mapping.Context;
 import com.atex.onecms.content.mapping.Request;
+import com.atex.onecms.image.ImageInfoAspectBean;
 import com.polopoly.model.Model;
 import com.polopoly.model.ModelDomain;
 import com.polopoly.model.PojoAsModel;
@@ -106,6 +108,18 @@ public class DamHermesComposer implements ContentComposer<Object, Object, Object
 						HermesElement imageElement = new HermesElement("image", HermesTypesEnum.IMAGE.getValue(), HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType);
 						imageElement.setResourceContentId(hermesObjectBean.getContentId());
 						hermesElements.add(imageElement);
+
+						if(content.getAspectNames().contains(ImageInfoAspectBean.ASPECT_NAME)){
+							ImageInfoAspectBean imageInfoAspectBean = (ImageInfoAspectBean)content.getAspectData(ImageInfoAspectBean.ASPECT_NAME);
+							String filePath = imageInfoAspectBean.getFilePath();
+							if(content.getAspectNames().contains(FilesAspectBean.ASPECT_NAME)){
+								FilesAspectBean filesAspectBean = (FilesAspectBean)content.getAspectData(FilesAspectBean.ASPECT_NAME);
+								String fileUri = filesAspectBean.getFiles().get(filePath).getFileUri();
+								fileUri = fileUri.replaceFirst("://", "/");
+								hermesObjectBean.setFileurl(fileUri);
+							}
+						}
+
 					}
 					
 									
