@@ -11,6 +11,8 @@ public class HermesElement{
 	private String hermesVariant;
 	private String hermesLevelId;
 	private String resourceContentId;
+	private int statusId;
+	private String status;
 	private Map<String, String> metadata = new HashMap<String, String>();
 	
 	
@@ -81,5 +83,17 @@ public class HermesElement{
 	public void setMetadata(Map<String, String> metadata) {
 		this.metadata = metadata;
 	}
+        public int getStatusId() {
+                return statusId;
+        }
+        public void setStatusId(int statusId) {
+                this.statusId = statusId;
+        }
+        public String getStatus() {
+                return status;
+        }
+        public void setStatus(String status) {
+                this.status = status;
+        }
 
 }
