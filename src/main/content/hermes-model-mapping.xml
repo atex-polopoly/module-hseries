@@ -34,6 +34,10 @@
 				<component group="composer" name="com.atex.onecms.app.dam.image.DamImageBean">adapter.DamHermesBean.mapper</component> 
 				<component group="composer" name="com.atex.standard.article.ArticleBean">adapter.StandardArticleHermesBean.mapper</component>
 				<component group="composer" name="com.atex.standard.image.ImageContentDataBean">adapter.ImageHermesBean.mapper</component>
+
+                <component group="composer" name="com.atex.onecms.app.dam.wire.DamWireImageBean">adapter.DamHermesBean.mapper</component> 
+                <component group="composer" name="com.atex.onecms.app.dam.wire.DamWireArticleBean">adapter.DamHermesBean.mapper</component> 
+        
 		</content>
 		
 		

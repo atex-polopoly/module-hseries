@@ -119,7 +119,6 @@ public class DamHermesComposer implements ContentComposer<Object, Object, Object
 								hermesObjectBean.setFileurl(fileUri);
 							}
 						}
-
 					}
 					
 									
