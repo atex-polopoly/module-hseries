@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<batch xmlns="http://www.polopoly.com/polopoly/cm/xmlio">
+
+		<!-- IMPORTANT NOTE: leave this as clear="false" to avoid override the default mapping model used also by act -->
+		<content clear="false">
+				<metadata>
+						<contentid>
+								<major>Content</major>
+								<externalid>atex.onecms.ContentManager.DefaultConfig</externalid>
+						</contentid>
+						<input-template>
+								<externalid>com.atex.onecms.content.ContentManager.config</externalid>
+						</input-template>
+				</metadata>
+
+			
+				
+
+				<component group="variantMapping" name="polopolypreview">example.ContentManager.variant.polopolypreview</component>
+		</content>
+		
+
+		<content>
+				<metadata>
+						<contentid>
+								<major>Content</major>
+								<externalid>example.ContentManager.variant.polopolypreview</externalid>
+						</contentid>
+						<input-template>
+								<externalid>com.polopoly.data.Variant.config</externalid>
+						</input-template>
+				</metadata>
+				
+				<component group="" name="defaultComposer">adapter.DamContentPolopolyPreviewComposer.mapper</component>
+		</content>
+		
+				<content>
+				<metadata>
+						<contentid>
+								<major>Content</major>
+								<externalid>adapter.DamContentPolopolyPreviewComposer.mapper</externalid>
+						</contentid>
+						<input-template>
+								<externalid>p.model.Pojo</externalid>
+						</input-template>
+				</metadata>
+				<component group="model" name="modelType">com.atex.onecms.content.mapping.MappingConfigBean</component>
+				<component group="model" name="pojo">
+						{'_type' : 'com.atex.onecms.content.mapping.MappingConfigBean',
+						'mapperClass':'example.hermes.composer.DamContentPolopolyPreviewComposer'
+						}
+				</component>
+		</content>
+		
+		
+
+		
+</batch>
