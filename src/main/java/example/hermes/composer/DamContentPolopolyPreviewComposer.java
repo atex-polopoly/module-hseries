@@ -33,7 +33,7 @@ public class DamContentPolopolyPreviewComposer implements ContentComposer<Object
 		}
 		
 		HermesBean bean = new HermesBean();
-		bean.add(HermesBean.HE_WEB_METADATA_COLLECTION_GALLERY_LINK, preview);
+		bean.add(HermesBean.HE_WEB_METADATA_HTTP_LINK_URL, preview);
 	
 		return new ContentResult<Object>(result,bean,null);
 	}

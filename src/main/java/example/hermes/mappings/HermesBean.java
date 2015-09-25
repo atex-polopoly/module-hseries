@@ -31,9 +31,10 @@ public class HermesBean  implements Serializable {
 	@XmlElement
 	private HashMap<String,String> metadata = null;
 	
-	public static final String HE_WEB_METADATA_VIDEO_BRIGHTCOVE_ID 	   = "BC_ID";
-	public static final String HE_WEB_METADATA_COLLECTION_GALLERY_LINK = "POLOPOLY_GALLERY_LINK";
-	public static final String HE_WEB_METADATA_DESK_PREVIEW_LINK 	   = "DESK_PREVIEW_LINK";
+	public static final String HE_WEB_METADATA_VIDEO_BRIGHTCOVE_ID = "BC_ID";
+	public static final String HE_WEB_METADATA_INTERNAL_LINK = "INTERNAL_LINK";
+	public static final String HE_WEB_METADATA_EXTERNAL_LINK = "EXTERNAL_LINK";
+	public static final String HE_WEB_METADATA_HTTP_LINK_URL = "HTTP_LINK_URL";
 	
 	private static final long serialVersionUID = 1L;
 }
