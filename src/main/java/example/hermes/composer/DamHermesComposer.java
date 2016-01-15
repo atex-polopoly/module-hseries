@@ -100,12 +100,12 @@ public class DamHermesComposer implements ContentComposer<Object, Object, Object
 
 					if(contentBean.getChild("objectType").toString().equals("article")){
 						hermesElementAspect.setHermesContentType(HermesTypesEnum.TEXT.getValue());
-						hermesElements.add(new HermesElement("body", HermesTypesEnum.TEXT.getValue(), HermesConstants.HERMES_LEVEL_TEXTS, hermesDataType));
+						hermesElements.add(new HermesElement("body", "Text", HermesTypesEnum.TEXT.getValue(), HermesConstants.HERMES_LEVEL_TEXTS, hermesDataType));
 					}
 
 					if(contentBean.getChild("objectType").toString().equals("image")){
 						hermesElementAspect.setHermesContentType(HermesTypesEnum.IMAGE.getValue());
-						HermesElement imageElement = new HermesElement("image", HermesTypesEnum.IMAGE.getValue(), HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType);
+						HermesElement imageElement = new HermesElement("image", "image", HermesTypesEnum.IMAGE.getValue(), HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType);
 						imageElement.setResourceContentId(hermesObjectBean.getContentId());
 						hermesElements.add(imageElement);
 
