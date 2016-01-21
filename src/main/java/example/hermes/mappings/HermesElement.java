@@ -25,13 +25,12 @@ public class HermesElement{
 	}
 	
 	public HermesElement(String name, String printName, int hermesType, String hermesLevelId, String hermesDataType) {
-		super();
+		this();
 		this.name = name;
 		this.hermesType = hermesType;
 		this.hermesLevelId = hermesLevelId;
 		this.hermesDataType = hermesDataType;
 		this.printName = printName;
-		this.assignee = new String("");
 	}
 	
 	public String getName() {
