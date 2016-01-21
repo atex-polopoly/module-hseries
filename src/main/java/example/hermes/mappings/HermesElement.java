@@ -14,6 +14,7 @@ public class HermesElement{
 	private int statusId;
 	private String status;
 	private String printName;
+	private String assignee;
 
 	private Map<String, String> metadata = new HashMap<String, String>();
 	
@@ -30,6 +31,7 @@ public class HermesElement{
 		this.hermesLevelId = hermesLevelId;
 		this.hermesDataType = hermesDataType;
 		this.printName = printName;
+		this.assignee = new String("");
 	}
 	
 	public String getName() {
@@ -105,5 +107,13 @@ public class HermesElement{
 
 	public void setPrintName(String printName) {
 		this.printName = printName;
+	}
+
+	public String getAssignee() {
+		return assignee;
+	}
+
+	public void setAssignee(String assignee) {
+		this.assignee = assignee;
 	}
 }
