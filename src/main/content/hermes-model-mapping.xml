@@ -31,6 +31,9 @@
 						</input-template>
 				</metadata>
 				<component group="composer" name="com.atex.onecms.app.dam.article.DamArticleBean">adapter.DamHermesBean.mapper</component>
+				<component group="composer" name="atex.dam.standard.Article">adapter.DamHermesBean.mapper</component>
+				<component group="composer" name="atex.dam.standard.Image">adapter.DamHermesBean.mapper</component>
+				<component group="composer" name="atex.dam.standard.Video">adapter.DamHermesBean.mapper</component>
 				<component group="composer" name="com.atex.onecms.app.dam.image.DamImageBean">adapter.DamHermesBean.mapper</component> 
 				<component group="composer" name="com.atex.standard.article.ArticleBean">adapter.StandardArticleHermesBean.mapper</component>
 				<component group="composer" name="com.atex.standard.image.ImageContentDataBean">adapter.ImageHermesBean.mapper</component>
