@@ -13,8 +13,10 @@ public class HermesElement{
 	private String resourceContentId;
 	private int statusId;
 	private String status;
+	private String expPubDate;
 	private String printName;
 	private String assignee;
+
 
 	private Map<String, String> metadata = new HashMap<String, String>();
 	
@@ -114,5 +116,13 @@ public class HermesElement{
 
 	public void setAssignee(String assignee) {
 		this.assignee = assignee;
+	}
+
+	public String getExpPubDate() {
+		return expPubDate;
+	}
+
+	public void setExpPubDate(String expPubDate) {
+		this.expPubDate = expPubDate;
 	}
 }
