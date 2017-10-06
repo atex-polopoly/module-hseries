@@ -32,6 +32,7 @@
 				</metadata>
 				<component group="composer" name="com.atex.onecms.app.dam.article.DamArticleBean">adapter.DamHermesBean.mapper</component>
 				<component group="composer" name="atex.dam.standard.Article">adapter.DamHermesBean.mapper</component>
+				<component group="composer" name="atex.dam.standard.WireArticle">adapter.WireArticleHermesBean.mapper,adapter.DamHermesBean.mapper</component>
 				<component group="composer" name="atex.dam.standard.Image">adapter.DamHermesBean.mapper</component>
 				<component group="composer" name="atex.dam.standard.Video">adapter.DamHermesBean.mapper</component>
 				<component group="composer" name="com.atex.onecms.app.dam.image.DamImageBean">adapter.DamHermesBean.mapper</component> 
@@ -96,6 +97,25 @@
 					'mapperClass':'example.hermes.composer.ImageHermesComposer'
 					}
 			</component>
-		</content>		
-		
+		</content>
+
+
+		<content>
+			<metadata>
+				<contentid>
+					<major>Content</major>
+					<externalid>adapter.WireArticleHermesBean.mapper</externalid>
+				</contentid>
+				<input-template>
+					<externalid>p.model.Pojo</externalid>
+				</input-template>
+			</metadata>
+			<component group="model" name="modelType">com.atex.onecms.content.mapping.MappingConfigBean</component>
+			<component group="model" name="pojo">
+				{'_type' : 'com.atex.onecms.content.mapping.MappingConfigBean',
+				'mapperClass':'com.atex.onecms.app.dam.composer.DamWireArticleFollowComposer'
+				}
+			</component>
+		</content>
+
 </batch>
