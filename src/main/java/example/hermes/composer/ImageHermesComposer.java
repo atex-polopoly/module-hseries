@@ -65,7 +65,7 @@ public class ImageHermesComposer implements ContentComposer<Object, Object, Obje
 					hermesElements = hermesElementAspect.getElements();
 
 					
-					HermesElement imageElement = new HermesElement("image", HermesTypesEnum.IMAGE.getValue(), HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType);
+					HermesElement imageElement = new HermesElement("image", "image", HermesTypesEnum.IMAGE.getValue(), HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType);
 					//imageElement.getMetadata().put("WEB/AUTHOR", original.getByline());
 					hermesElements.add(imageElement);
 					
@@ -76,13 +76,8 @@ public class ImageHermesComposer implements ContentComposer<Object, Object, Obje
 					hermesElements = hermesElementAspect.getElements();
 				}
 
-
-
 				if(contentBean.getChild("description")!= null && contentBean.getChild("description").toString().trim().length() > 0)
-					hermesElements.add(new HermesElement("description", HermesTypesEnum.CAPTION.getValue(), HermesConstants.HERMES_LEVEL_TEXTS, hermesDataType));
-
-
-
+					hermesElements.add(new HermesElement("description", "description", HermesTypesEnum.CAPTION.getValue(), HermesConstants.HERMES_LEVEL_TEXTS, hermesDataType));
 
 				/*
 				 * End Polopoly To Hermes Mapping
@@ -100,7 +95,7 @@ public class ImageHermesComposer implements ContentComposer<Object, Object, Obje
 
 				cwb.origin(content);
 				ContentWrite<Object> cw = cwb.buildUpdate();
-				res = cm.update(content.getId().getContentId(), cw, SYSTEM_SUBJECT);
+				res =  new ContentResult<Object>(imageBeanDataResult, cw.getContentData(), cw.getAspects()); 
 
 			}
 

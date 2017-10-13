@@ -13,6 +13,9 @@ public class HermesElement{
 	private String resourceContentId;
 	private int statusId;
 	private String status;
+	private String printName;
+	private String assignee;
+
 	private Map<String, String> metadata = new HashMap<String, String>();
 	
 	
@@ -21,12 +24,13 @@ public class HermesElement{
 		super();
 	}
 	
-	public HermesElement(String name, int hermesType, String hermesLevelId, String hermesDataType) {
-		super();
+	public HermesElement(String name, String printName, int hermesType, String hermesLevelId, String hermesDataType) {
+		this();
 		this.name = name;
 		this.hermesType = hermesType;
 		this.hermesLevelId = hermesLevelId;
 		this.hermesDataType = hermesDataType;
+		this.printName = printName;
 	}
 	
 	public String getName() {
@@ -83,17 +87,32 @@ public class HermesElement{
 	public void setMetadata(Map<String, String> metadata) {
 		this.metadata = metadata;
 	}
-        public int getStatusId() {
-                return statusId;
-        }
-        public void setStatusId(int statusId) {
-                this.statusId = statusId;
-        }
-        public String getStatus() {
-                return status;
-        }
-        public void setStatus(String status) {
-                this.status = status;
-        }
+    public int getStatusId() {
+            return statusId;
+    }
+    public void setStatusId(int statusId) {
+            this.statusId = statusId;
+    }
+    public String getStatus() {
+            return status;
+    }
+    public void setStatus(String status) {
+            this.status = status;
+    }
 
+	public String getPrintName() {
+		return printName;
+	}
+
+	public void setPrintName(String printName) {
+		this.printName = printName;
+	}
+
+	public String getAssignee() {
+		return assignee;
+	}
+
+	public void setAssignee(String assignee) {
+		this.assignee = assignee;
+	}
 }
