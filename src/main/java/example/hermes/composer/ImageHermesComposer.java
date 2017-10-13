@@ -16,10 +16,7 @@ import com.polopoly.model.Model;
 import com.polopoly.model.ModelDomain;
 import com.polopoly.model.PojoAsModel;
 
-import example.hermes.mappings.HermesConstants;
-import example.hermes.mappings.HermesElement;
-import example.hermes.mappings.HermesElementAspect;
-import example.hermes.mappings.HermesTypesEnum;
+import example.hermes.mappings.*;
 
 public class ImageHermesComposer implements ContentComposer<Object, Object, Object>{
 
@@ -65,7 +62,7 @@ public class ImageHermesComposer implements ContentComposer<Object, Object, Obje
 					hermesElements = hermesElementAspect.getElements();
 
 					
-					HermesElement imageElement = new HermesElement("image", "image", HermesTypesEnum.IMAGE.getValue(), HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType);
+					HermesElement imageElement = new HermesElement(ElementNameEnum.IMAGE.getName(), ElementNameEnum.IMAGE.getPrintName(), HermesTypesEnum.IMAGE.getValue(), HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType);
 					//imageElement.getMetadata().put("WEB/AUTHOR", original.getByline());
 					hermesElements.add(imageElement);
 					
@@ -76,8 +73,8 @@ public class ImageHermesComposer implements ContentComposer<Object, Object, Obje
 					hermesElements = hermesElementAspect.getElements();
 				}
 
-				if(contentBean.getChild("description")!= null && contentBean.getChild("description").toString().trim().length() > 0)
-					hermesElements.add(new HermesElement("description", "description", HermesTypesEnum.CAPTION.getValue(), HermesConstants.HERMES_LEVEL_TEXTS, hermesDataType));
+				if(contentBean.getChild(ElementNameEnum.DESCRIPTION.getName())!= null && contentBean.getChild(ElementNameEnum.DESCRIPTION.getName()).toString().trim().length() > 0)
+					hermesElements.add(new HermesElement(ElementNameEnum.DESCRIPTION.getName(), ElementNameEnum.DESCRIPTION.getPrintName(), HermesTypesEnum.CAPTION.getValue(), HermesConstants.HERMES_LEVEL_TEXTS, hermesDataType));
 
 				/*
 				 * End Polopoly To Hermes Mapping

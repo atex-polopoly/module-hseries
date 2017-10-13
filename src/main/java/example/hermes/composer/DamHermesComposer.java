@@ -17,11 +17,7 @@ import com.polopoly.model.Model;
 import com.polopoly.model.ModelDomain;
 import com.polopoly.model.PojoAsModel;
 
-import example.hermes.mappings.HermesConstants;
-import example.hermes.mappings.HermesElement;
-import example.hermes.mappings.HermesElementAspect;
-import example.hermes.mappings.HermesObjectBean;
-import example.hermes.mappings.HermesTypesEnum;
+import example.hermes.mappings.*;
 
 public class DamHermesComposer implements ContentComposer<Object, Object, Object>{
 
@@ -57,23 +53,13 @@ public class DamHermesComposer implements ContentComposer<Object, Object, Object
 	            if(contentBean.getChild("name") != null)
 	            	hermesObjectBean.setName(contentBean.getChild("name").toString());
 	            
-	            if(contentBean.getChild("body") != null)
-	            	hermesObjectBean.setText(contentBean.getChild("body").toString());
+	            if(contentBean.getChild(ElementNameEnum.TEXT.getName()) != null)
+	            	hermesObjectBean.setText(contentBean.getChild(ElementNameEnum.TEXT.getName()).toString());
 	            if(contentBean.getChild("author") != null)
 	            	hermesObjectBean.setAuthor(contentBean.getChild("author").toString());
-	            if(contentBean.getChild("description") != null)
-	            	hermesObjectBean.setCaption(contentBean.getChild("description").toString());
+	            if(contentBean.getChild(ElementNameEnum.DESCRIPTION.getName()) != null)
+	            	hermesObjectBean.setCaption(contentBean.getChild(ElementNameEnum.DESCRIPTION.getName()).toString());
 
-	            	
-	            	/*
-	            	 * Temporary patch for file service storage
-	            	 */
-//	            	if (imageBean.getUrl()!= null && !imageBean.getUrl().contains("polopoly_fs")){						
-//						imageBean.setUrl("/dam/content/file?file=" + imageBean.getUrl());
-//						imageBean.setThumbUrl("/dam/content/file?file=" + imageBean.getThumbUrl());
-//					}
-//	            	hermesObjectBean.setFileurl(imageBean.getUrl());
-//	            }
 	            
 	            /*
 	             * Add hermes element aspects to allow copy/paste to ACT and then import into Hermes Production 
@@ -98,14 +84,14 @@ public class DamHermesComposer implements ContentComposer<Object, Object, Object
 					
 					List<HermesElement> hermesElements = hermesElementAspect.getElements();
 
-					if(contentBean.getChild("objectType").toString().equals("article")){
+					if(contentBean.getChild("objectType").toString().equals(ElementNameEnum.ARTICLE.getName())){
 						hermesElementAspect.setHermesContentType(HermesTypesEnum.TEXT.getValue());
-						hermesElements.add(new HermesElement("body", "Text", HermesTypesEnum.TEXT.getValue(), HermesConstants.HERMES_LEVEL_TEXTS, hermesDataType));
+						hermesElements.add(new HermesElement(ElementNameEnum.TEXT.getName(), ElementNameEnum.TEXT.getPrintName(), HermesTypesEnum.TEXT.getValue(), HermesConstants.HERMES_LEVEL_TEXTS, hermesDataType));
 					}
 
-					if(contentBean.getChild("objectType").toString().equals("image")){
+					if(contentBean.getChild("objectType").toString().equals(ElementNameEnum.IMAGE.getName())){
 						hermesElementAspect.setHermesContentType(HermesTypesEnum.IMAGE.getValue());
-						HermesElement imageElement = new HermesElement("image", "image", HermesTypesEnum.IMAGE.getValue(), HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType);
+						HermesElement imageElement = new HermesElement(ElementNameEnum.IMAGE.getName(), ElementNameEnum.IMAGE.getPrintName(), HermesTypesEnum.IMAGE.getValue(), HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType);
 						imageElement.setResourceContentId(hermesObjectBean.getContentId());
 						hermesElements.add(imageElement);
 

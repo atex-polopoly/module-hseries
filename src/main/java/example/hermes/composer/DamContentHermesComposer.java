@@ -21,7 +21,7 @@ import com.polopoly.util.StringUtil;
 
 import example.hermes.mappings.HermesBean;
 
-public class DamContentHermesComposer  implements ContentComposer<Object, Object, Object>{
+public class  DamContentHermesComposer  implements ContentComposer<Object, Object, Object>{
 	@Override
 	public ContentResult<Object> compose(ContentResult<Object> result,
 			String s, Request request, Context<Object> context) {

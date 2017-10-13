@@ -14,17 +14,13 @@ import com.atex.onecms.content.aspects.annotations.AspectDefinition;
 import com.atex.onecms.content.mapping.ContentComposer;
 import com.atex.onecms.content.mapping.Context;
 import com.atex.onecms.content.mapping.Request;
-import com.polopoly.cm.ContentId;
 import com.polopoly.cm.ContentIdFactory;
 import com.polopoly.model.Model;
 import com.polopoly.model.ModelDomain;
 import com.polopoly.model.ModelListBase;
 import com.polopoly.model.PojoAsModel;
 
-import example.hermes.mappings.HermesConstants;
-import example.hermes.mappings.HermesElement;
-import example.hermes.mappings.HermesElementAspect;
-import example.hermes.mappings.HermesTypesEnum;
+import example.hermes.mappings.*;
 import com.atex.onecms.content.IdUtil;
 
 
@@ -74,16 +70,16 @@ public class StandardArticleHermesComposer implements ContentComposer<Object, Ob
 					List<HermesElement> hermesElements = hermesElementAspect.getElements();
 
 
-					HermesElement spElement = new HermesElement("article", "article", HermesTypesEnum.STORY_PACKAGE.getValue(), HermesConstants.HERMES_LEVEL_SP, hermesDataType);
+					HermesElement spElement = new HermesElement(ElementNameEnum.ARTICLE.getName(), ElementNameEnum.ARTICLE.getPrintName(), HermesTypesEnum.STORY_PACKAGE.getValue(), HermesConstants.HERMES_LEVEL_SP, hermesDataType);
 					//					spElement.getMetadata().put("WEB/AUTHOR", original.getByline());
 					hermesElements.add(spElement);
 
-					HermesElement titleElement = new HermesElement("headline", "Headline", HermesTypesEnum.HEADER.getValue(), HermesConstants.HERMES_LEVEL_TEXTS, hermesDataType);
+					HermesElement titleElement = new HermesElement(ElementNameEnum.HEADLINE.getName(), ElementNameEnum.HEADLINE.getPrintName(), HermesTypesEnum.HEADER.getValue(), HermesConstants.HERMES_LEVEL_TEXTS, hermesDataType);
 					// titleElement.getMetadata().put("WEB/SUBTYPE", "main title");
 					hermesElements.add(titleElement);
 
-					hermesElements.add(new HermesElement("lead", "Lead", HermesTypesEnum.CAPTION.getValue(), HermesConstants.HERMES_LEVEL_TEXTS, hermesDataType));
-					hermesElements.add(new HermesElement("body", "Text", HermesTypesEnum.TEXT.getValue(), HermesConstants.HERMES_LEVEL_TEXTS, hermesDataType));
+					hermesElements.add(new HermesElement(ElementNameEnum.LEAD.getName(), ElementNameEnum.LEAD.getPrintName(), HermesTypesEnum.CAPTION.getValue(), HermesConstants.HERMES_LEVEL_TEXTS, hermesDataType));
+					hermesElements.add(new HermesElement(ElementNameEnum.TEXT.getName(), ElementNameEnum.TEXT.getPrintName(), HermesTypesEnum.TEXT.getValue(), HermesConstants.HERMES_LEVEL_TEXTS, hermesDataType));
 
 					if(contentBean.getChild("images")!=null 
 							&& contentBean.getChild("images") instanceof ModelListBase
@@ -94,7 +90,7 @@ public class StandardArticleHermesComposer implements ContentComposer<Object, Ob
 						for (Object obj : imgArray) {
 							String strContentId = getContentId(obj);
 															
-							HermesElement imageElement = new HermesElement(HermesConstants.IMAGE_PREFIX+strContentId, "image", HermesTypesEnum.IMAGE.getValue(), HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType);
+							HermesElement imageElement = new HermesElement(HermesConstants.IMAGE_PREFIX+strContentId, ElementNameEnum.IMAGE.getPrintName(), HermesTypesEnum.IMAGE.getValue(), HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType);
 							imageElement.setResourceContentId(strContentId);
 							hermesElements.add(imageElement);
 						}					
@@ -150,7 +146,7 @@ public class StandardArticleHermesComposer implements ContentComposer<Object, Ob
 							String strContentId = getContentId(obj);
 											
 							if(hermesElementAspect.findElementByName(HermesConstants.IMAGE_PREFIX+strContentId) == null){							
-								HermesElement imageElement = new HermesElement(HermesConstants.IMAGE_PREFIX+strContentId, "image",
+								HermesElement imageElement = new HermesElement(HermesConstants.IMAGE_PREFIX+strContentId, ElementNameEnum.IMAGE.getPrintName(),
 										HermesTypesEnum.IMAGE.getValue(), HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType);
 								imageElement.setResourceContentId(strContentId);
 								hermesElementAspect.getElements().add(imageElement);
