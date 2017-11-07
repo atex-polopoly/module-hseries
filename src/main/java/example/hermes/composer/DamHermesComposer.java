@@ -21,7 +21,10 @@ import example.hermes.mappings.*;
 
 public class DamHermesComposer implements ContentComposer<Object, Object, Object>{
 
-	// private static final Subject SYSTEM_SUBJECT = new Subject("98", null);
+	private static final String MIMETYPE_VIDEO = "application/desk-video";
+	private static final String MIMETYPE_TWEET = "application/desk-tweet";
+	private static final String MIMETYPE_COLLECTION = "application/desk-collection";
+
 	private static final String hermesAspectName = HermesElementAspect.class.getAnnotation(AspectDefinition.class).value()[0];
 	
 	@Override
@@ -47,6 +50,8 @@ public class DamHermesComposer implements ContentComposer<Object, Object, Object
 			 *  variant: hermes
 			 */
 			if(s.equals("hermes")){
+				String objectType = contentBean.getChild("objectType").toString();
+
 				hermesObjectBean = new HermesObjectBean();
 				
 	            hermesObjectBean.setContentId(damObjectBeanDataResult.getContent().getId().getKey());
@@ -84,12 +89,12 @@ public class DamHermesComposer implements ContentComposer<Object, Object, Object
 					
 					List<HermesElement> hermesElements = hermesElementAspect.getElements();
 
-					if(contentBean.getChild("objectType").toString().equals(ElementNameEnum.ARTICLE.getName())){
+					if(objectType.equals(ElementNameEnum.ARTICLE.getName())){
 						hermesElementAspect.setHermesContentType(HermesTypesEnum.TEXT.getValue());
 						hermesElements.add(new HermesElement(ElementNameEnum.TEXT.getName(), ElementNameEnum.TEXT.getPrintName(), HermesTypesEnum.TEXT.getValue(), HermesConstants.HERMES_LEVEL_TEXTS, hermesDataType));
 					}
 
-					if(contentBean.getChild("objectType").toString().equals(ElementNameEnum.IMAGE.getName())){
+					if(objectType.equals(ElementNameEnum.IMAGE.getName())){
 						hermesElementAspect.setHermesContentType(HermesTypesEnum.IMAGE.getValue());
 						HermesElement imageElement = new HermesElement(ElementNameEnum.IMAGE.getName(), ElementNameEnum.IMAGE.getPrintName(), HermesTypesEnum.IMAGE.getValue(), HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType);
 						imageElement.setResourceContentId(hermesObjectBean.getContentId());
@@ -106,8 +111,23 @@ public class DamHermesComposer implements ContentComposer<Object, Object, Object
 							}
 						}
 					}
-					
-									
+
+					// http links
+					else if (objectType.equals("video")){
+						HermesElement httpLinkElement = new HermesElement(ElementNameEnum.HTTP_LINK.getName(), ElementNameEnum.HTTP_LINK.getPrintName(), HermesTypesEnum.HTTP_LINK.getValue(), HermesConstants.HERMES_LEVEL_HTTP_LINK, MIMETYPE_VIDEO);
+						httpLinkElement.setResourceContentId(hermesObjectBean.getContentId());
+						hermesElements.add(httpLinkElement);
+					}
+					else if (objectType.equals("tweet")) {
+						HermesElement httpLinkElement = new HermesElement(ElementNameEnum.HTTP_LINK.getName(), ElementNameEnum.HTTP_LINK.getPrintName(), HermesTypesEnum.HTTP_LINK.getValue(), HermesConstants.HERMES_LEVEL_HTTP_LINK, MIMETYPE_TWEET);
+						httpLinkElement.setResourceContentId(hermesObjectBean.getContentId());
+						hermesElements.add(httpLinkElement);
+					}
+					else if(objectType.equals("collection")){
+						HermesElement httpLinkElement = new HermesElement(ElementNameEnum.HTTP_LINK.getName(), ElementNameEnum.HTTP_LINK.getPrintName(), HermesTypesEnum.HTTP_LINK.getValue(), HermesConstants.HERMES_LEVEL_HTTP_LINK, MIMETYPE_COLLECTION);
+						httpLinkElement.setResourceContentId(hermesObjectBean.getContentId());
+						hermesElements.add(httpLinkElement);
+					}
 
 				}else{
 					hermesElementAspect = (HermesElementAspect)content.getAspect(hermesAspectName).getData();	

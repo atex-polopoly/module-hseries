@@ -1,9 +1,12 @@
 package example.hermes.mappings;
 
+import org.apache.commons.lang.StringUtils;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class HermesElement{
+
 	private String name;
 	private String hermesPk;
 	private int hermesType; // HermesTypesEnum value
@@ -17,20 +20,35 @@ public class HermesElement{
 	private String assignee;
 
 	private Map<String, String> metadata = new HashMap<String, String>();
-	
-	
-	
+
+	private final static String SUBTYPE = "WEB.SUBTYPE";
+
 	public HermesElement() {
 		super();
 	}
-	
+
 	public HermesElement(String name, String printName, int hermesType, String hermesLevelId, String hermesDataType) {
+		super();
+		this.name = name;
+		this.printName = printName;
+		this.hermesType = hermesType;
+		this.hermesLevelId = hermesLevelId;
+		this.hermesDataType = hermesDataType;
+	}
+
+	public HermesElement(String name, String printName, int hermesType, String hermesLevelId, String hermesDataType, String subtype) {
 		this();
 		this.name = name;
 		this.hermesType = hermesType;
 		this.hermesLevelId = hermesLevelId;
 		this.hermesDataType = hermesDataType;
 		this.printName = printName;
+
+		Map<String, String> metadata = new HashMap<String, String>();
+		if (StringUtils.isNotEmpty(subtype)) {
+			metadata.put(SUBTYPE, subtype);
+		}
+		this.metadata  = metadata;
 	}
 	
 	public String getName() {

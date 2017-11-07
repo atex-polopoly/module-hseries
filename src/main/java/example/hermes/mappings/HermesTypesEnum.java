@@ -17,7 +17,7 @@ public static final short OBJ_STORY_PACKAGE		= 17;
 
 public enum HermesTypesEnum {
 	
-	TEXT(1), HEADER(2), CAPTION(3), TESTATINA(4), TABLE(5), IMAGE(6), SUMMARY(14), CREDIT_BOX(16), STORY_PACKAGE(17);
+	TEXT(1), HEADER(2), CAPTION(3), TESTATINA(4), TABLE(5), IMAGE(6), SUMMARY(14), CREDIT_BOX(16), STORY_PACKAGE(17), HTTP_LINK(21);
     
 	private int value;
 

@@ -8,7 +8,7 @@ package example.hermes.mappings;
 
 public enum ElementNameEnum {
 
-	ARTICLE("article", "article"), TEXT("body", "Text"), HEADLINE("headline", "Headline"), LEAD("lead", "Lead"), IMAGE("image", "Image"), DESCRIPTION("description","description");
+	ARTICLE("article", "article"), TEXT("body", "Text"), HEADLINE("headline", "Headline"), LEAD("lead", "Lead"), IMAGE("image", "Image"), DESCRIPTION("description","description"), HTTP_LINK("http_link", "http_link");
 
 	private String name;
 	private String printName;

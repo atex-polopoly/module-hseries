@@ -1,15 +1,10 @@
 package example.hermes.composer;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import com.atex.onecms.content.Content;
-import com.atex.onecms.content.ContentManager;
-import com.atex.onecms.content.ContentResult;
-import com.atex.onecms.content.ContentWrite;
-import com.atex.onecms.content.ContentWriteBuilder;
-import com.atex.onecms.content.Subject;
+import com.atex.onecms.content.*;
 import com.atex.onecms.content.aspects.annotations.AspectDefinition;
 import com.atex.onecms.content.mapping.ContentComposer;
 import com.atex.onecms.content.mapping.Context;
@@ -21,17 +16,24 @@ import com.polopoly.model.ModelListBase;
 import com.polopoly.model.PojoAsModel;
 
 import example.hermes.mappings.*;
-import com.atex.onecms.content.IdUtil;
 
 
 public class StandardArticleHermesComposer implements ContentComposer<Object, Object, Object>{
 
+	private static Logger logger = Logger.getLogger(StandardArticleHermesComposer.class.getName());
 	private static final Subject SYSTEM_SUBJECT = new Subject("98", null);
 	private static final String hermesAspectName = HermesElementAspect.class.getAnnotation(AspectDefinition.class).value()[0];
 
+	private static final String RESOURCE_TOP_IMAGE = "topImage";
+	private static final String RESOURCE_IMAGES = "images";
+	private static final String RESOURCE_MULTIMEDIA = "multimedia";
+
+	private static final String CONTENT_TYPE_IMAGE = "atex.dam.standard.Image";
+	private static final String CONTENT_TYPE_PROD_IMAGE = "com.atex.nosql.image.ImageContentDataBean";
+
 	@Override
 	public ContentResult<Object> compose(ContentResult<Object> articleBeanDataResult,
-			String s, Request request, Context<Object> context) {
+										 String s, Request request, Context<Object> context) {
 
 		ModelDomain modelDomain = context.getModelDomain();
 		Content<Object>  content = articleBeanDataResult.getContent();
@@ -42,12 +44,13 @@ public class StandardArticleHermesComposer implements ContentComposer<Object, Ob
 
 		try{
 			ContentManager cm = context.getContentManager();
-			
-			
+
+
 
 			String hermesDataType = "NewsRoom";
 
 			HermesElementAspect hermesElementAspect = null;
+			List<HermesElement> hermesElements = null;
 
 			/*
 			 *  variant: hermesStory
@@ -67,7 +70,7 @@ public class StandardArticleHermesComposer implements ContentComposer<Object, Ob
 					hermesElementAspect = new HermesElementAspect();
 					hermesElementAspect.setHermesContentType(HermesTypesEnum.STORY_PACKAGE.getValue());
 
-					List<HermesElement> hermesElements = hermesElementAspect.getElements();
+					hermesElements = hermesElementAspect.getElements();
 
 
 					HermesElement spElement = new HermesElement(ElementNameEnum.ARTICLE.getName(), ElementNameEnum.ARTICLE.getPrintName(), HermesTypesEnum.STORY_PACKAGE.getValue(), HermesConstants.HERMES_LEVEL_SP, hermesDataType);
@@ -81,22 +84,6 @@ public class StandardArticleHermesComposer implements ContentComposer<Object, Ob
 					hermesElements.add(new HermesElement(ElementNameEnum.LEAD.getName(), ElementNameEnum.LEAD.getPrintName(), HermesTypesEnum.CAPTION.getValue(), HermesConstants.HERMES_LEVEL_TEXTS, hermesDataType));
 					hermesElements.add(new HermesElement(ElementNameEnum.TEXT.getName(), ElementNameEnum.TEXT.getPrintName(), HermesTypesEnum.TEXT.getValue(), HermesConstants.HERMES_LEVEL_TEXTS, hermesDataType));
 
-					if(contentBean.getChild("images")!=null 
-							&& contentBean.getChild("images") instanceof ModelListBase
-							&& ((ModelListBase)contentBean.getChild("images")).toArray() != null){	
-						
-						Object[] imgArray = ((ModelListBase)contentBean.getChild("images")).toArray();
-
-						for (Object obj : imgArray) {
-							String strContentId = getContentId(obj);
-															
-							HermesElement imageElement = new HermesElement(ElementNameEnum.IMAGE.getName(), ElementNameEnum.IMAGE.getPrintName(), HermesTypesEnum.IMAGE.getValue(), HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType);
-							imageElement.setResourceContentId(strContentId);
-							hermesElements.add(imageElement);
-						}					
-					}
-
-
 				}else{
 					/*
 					 * These aspects will always be updated to handle use case such as:
@@ -106,55 +93,16 @@ public class StandardArticleHermesComposer implements ContentComposer<Object, Ob
 
 					hermesElementAspect = (HermesElementAspect)content.getAspect(hermesAspectName).getData();
 
-					if(contentBean.getChild("images")!=null 
-							&& contentBean.getChild("images") instanceof ModelListBase
-							&& ((ModelListBase)contentBean.getChild("images")).toArray() != null){	
-						
-				
-						Object[] imgArray = ((ModelListBase)contentBean.getChild("images")).toArray();
-						ArrayList<Object> images = new ArrayList<Object>(Arrays.asList(imgArray));
-						
-						// remove images which are not part of the article anymore
+					// Remove resources, then add new resources, to account for deleted resources
+					removeResources(hermesElementAspect);
 
-						List<HermesElement> elements = hermesElementAspect.getElements();
-
-						for(int i=0; i< elements.size(); i++){
-
-							HermesElement hermesElement = elements.get(i);
-							//if(hermesElement.getName().startsWith(HermesConstants.IMAGE_PREFIX)){
-							if(hermesElement.getName().equals(ElementNameEnum.IMAGE.getName())){
-
-								String imageContentId = hermesElement.getResourceContentId();
-
-								Object idContent = null;
-								if(imageContentId.startsWith("onecms")){
-									com.atex.onecms.content.ContentId cOneCmsId = IdUtil.fromString(imageContentId);
-									idContent = cOneCmsId;
-								}
-								else{
-									com.polopoly.cm.ContentId ici = ContentIdFactory.createContentId(imageContentId);
-									idContent = ici;
-								}						
-								
-								if(!images.contains(idContent)){
-									elements.remove(i);
-								}
-							}
-						}
-
-						//for (ContentId contentId : images) {
-						for (Object obj : images) {
-							String strContentId = getContentId(obj);
-											
-							if(hermesElementAspect.findElementByName(HermesConstants.IMAGE_PREFIX+strContentId) == null){							
-								HermesElement imageElement = new HermesElement(HermesConstants.IMAGE_PREFIX+strContentId, ElementNameEnum.IMAGE.getPrintName(),
-										HermesTypesEnum.IMAGE.getValue(), HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType);
-								imageElement.setResourceContentId(strContentId);
-								hermesElementAspect.getElements().add(imageElement);
-							}
-						}
-					}
 				}
+
+				// add resources
+				addResources (cm, contentBean, hermesElements, hermesDataType, RESOURCE_IMAGES, "", false);
+				addResources (cm, contentBean, hermesElements, hermesDataType, RESOURCE_MULTIMEDIA, "", false);
+
+
 				/*
 				 * End Polopoly To Hermes Mapping
 				 */				
@@ -168,9 +116,9 @@ public class StandardArticleHermesComposer implements ContentComposer<Object, Ob
 				cwb.mainAspect(content.getContentAspect());
 				cwb.aspect(hermesAspectName, hermesElementAspect);
 				cwb.origin(content);
-				ContentWrite<Object> cw = cwb.buildUpdate();		
-				
-				res =  new ContentResult<Object>(articleBeanDataResult, cw.getContentData(), cw.getAspects()); 
+				ContentWrite<Object> cw = cwb.buildUpdate();
+
+				res =  new ContentResult<Object>(articleBeanDataResult, cw.getContentData(), cw.getAspects());
 
 			}
 
@@ -181,11 +129,97 @@ public class StandardArticleHermesComposer implements ContentComposer<Object, Ob
 		return res;
 
 	}
-	
+
+
+	/**
+	 * Create an HermesElement of type image or of type httplink.
+	 * @param contentBean
+	 * @param hermesElements
+	 * @param hermesDataType
+	 * @param resourceListName
+	 * @param subtype
+	 * @param firstOnly
+	 */
+	private void addResources (ContentManager contentManager, Model contentBean, List<HermesElement> hermesElements, String hermesDataType,
+							   String resourceListName, String subtype, boolean firstOnly) {
+
+		logger.log(Level.FINE, "Adding resource of subtype {0} to {1}", new Object[] {subtype,resourceListName} );
+		if(contentBean.getChild(resourceListName)!=null && ((List<?>)contentBean.getChild(resourceListName)).toArray() != null){
+
+			@SuppressWarnings({ "unchecked", "rawtypes" })
+			com.atex.onecms.content.ContentId[] resourcesArray = (com.atex.onecms.content.ContentId[])
+					((List)contentBean.getChild(resourceListName)).toArray(new com.atex.onecms.content.ContentId[0]);
+			ArrayList<com.atex.onecms.content.ContentId> resources =
+					new ArrayList<com.atex.onecms.content.ContentId>(Arrays.asList(resourcesArray));
+
+			// Add resources to hermes SP
+			for (com.atex.onecms.content.ContentId contentId : resources) {
+				// Get content type: image or link
+				ContentVersionId cvid = contentManager.resolve(contentId, SYSTEM_SUBJECT);
+				ContentResult<Object> cr = contentManager.get(cvid, null, Object.class, null, SYSTEM_SUBJECT);
+				String contentType = cr.getContent().getContentDataType();
+
+				logger.log(Level.FINE, "Resource with content data type {0}", contentType);
+
+				String elementName = ElementNameEnum.HTTP_LINK.getName();
+				String elementPrintName = ElementNameEnum.HTTP_LINK.getPrintName();
+
+				boolean isImage = (contentType != null && (contentType.equals(CONTENT_TYPE_IMAGE)
+														|| (contentType.equals(CONTENT_TYPE_PROD_IMAGE))));
+
+				int hermesType = HermesTypesEnum.HTTP_LINK.getValue();
+				if (isImage)  {
+					elementName = ElementNameEnum.IMAGE.getName();
+					elementPrintName = ElementNameEnum.IMAGE.getPrintName();
+					hermesType = HermesTypesEnum.IMAGE.getValue();
+				}
+				String resourceId  = contentId.getDelegationId()  + ':' + contentId.getKey();
+				HermesElement resourceElement = new HermesElement(elementName, elementPrintName, hermesType, HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType, subtype);
+				resourceElement.setResourceContentId(resourceId);
+
+				// Add metadata for links
+				if (!isImage) {
+					Map<String, String> metadata = new HashMap<String, String>();
+					metadata.put("WEB.CONTENT_ID",resourceId);
+					resourceElement.setMetadata(metadata);
+				}
+
+				hermesElements.add(resourceElement);
+
+				logger.log(Level.FINE, "addResources: resourceElement {0} added", resourceElement.getName());
+				if (firstOnly) {
+					break;
+				}
+			}
+		}
+
+	}
+
+	/**
+	 * Remove image and http link elements from Hermes aspect
+	 * @param hermesElementAspect
+	 */
+	private void removeResources (HermesElementAspect hermesElementAspect) {
+		List<HermesElement> elements = hermesElementAspect.getElements();
+		int size = elements.size();
+		if (size > 0) {
+			for(int i=size - 1; i >= 0; i--){
+				HermesElement hermesElement = elements.get(i);
+				logger.log(Level.FINE, "Resource named {0}", hermesElement.getName());
+				if (hermesElement.getHermesType() == HermesTypesEnum.IMAGE.getValue() ||
+						hermesElement.getHermesType() == HermesTypesEnum.HTTP_LINK.getValue()) {
+					elements.remove(i);
+					logger.log(Level.FINE, "Removing resouce #{0}", i);
+				}
+			}
+		}
+	}
+
+
 	private String getContentId(Object obj){
-		
+
 		String strContentId = null;
-		
+
 		if(obj instanceof com.polopoly.cm.ContentId){
 			com.polopoly.cm.ContentId cId = (com.polopoly.cm.ContentId)obj;
 			strContentId = cId.getContentIdString();
@@ -194,10 +228,10 @@ public class StandardArticleHermesComposer implements ContentComposer<Object, Ob
 			com.atex.onecms.content.ContentId cOneCmsId = (com.atex.onecms.content.ContentId)obj;
 			strContentId = cOneCmsId.getDelegationId() + ":" + cOneCmsId.getKey();
 		}
-		
+
 		return strContentId;
 	}
-	
+
 }
 
 
