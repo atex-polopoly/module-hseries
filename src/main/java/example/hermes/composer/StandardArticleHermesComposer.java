@@ -92,6 +92,7 @@ public class StandardArticleHermesComposer implements ContentComposer<Object, Ob
 					 */
 
 					hermesElementAspect = (HermesElementAspect)content.getAspect(hermesAspectName).getData();
+					hermesElements = hermesElementAspect.getElements();
 
 					// Remove resources, then add new resources, to account for deleted resources
 					removeResources(hermesElementAspect);
