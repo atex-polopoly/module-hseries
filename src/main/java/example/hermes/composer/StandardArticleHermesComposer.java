@@ -90,7 +90,7 @@ public class StandardArticleHermesComposer implements ContentComposer<Object, Ob
 						for (Object obj : imgArray) {
 							String strContentId = getContentId(obj);
 															
-							HermesElement imageElement = new HermesElement(HermesConstants.IMAGE_PREFIX+strContentId, ElementNameEnum.IMAGE.getPrintName(), HermesTypesEnum.IMAGE.getValue(), HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType);
+							HermesElement imageElement = new HermesElement(ElementNameEnum.IMAGE.getName(), ElementNameEnum.IMAGE.getPrintName(), HermesTypesEnum.IMAGE.getValue(), HermesConstants.HERMES_LEVEL_IMAGES, hermesDataType);
 							imageElement.setResourceContentId(strContentId);
 							hermesElements.add(imageElement);
 						}					
@@ -121,9 +121,10 @@ public class StandardArticleHermesComposer implements ContentComposer<Object, Ob
 						for(int i=0; i< elements.size(); i++){
 
 							HermesElement hermesElement = elements.get(i);
-							if(hermesElement.getName().startsWith(HermesConstants.IMAGE_PREFIX)){
+							//if(hermesElement.getName().startsWith(HermesConstants.IMAGE_PREFIX)){
+							if(hermesElement.getName().equals(ElementNameEnum.IMAGE.getName())){
 
-								String imageContentId = hermesElement.getName().replaceAll(HermesConstants.IMAGE_PREFIX, "");
+								String imageContentId = hermesElement.getResourceContentId();
 
 								Object idContent = null;
 								if(imageContentId.startsWith("onecms")){
