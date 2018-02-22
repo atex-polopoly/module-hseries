@@ -79,6 +79,7 @@
 				<groupId>com.atex.gong</groupId>
 				<artifactId>nosql-beans</artifactId>
 				<version>2.6</version>
+				<scope>provided</scope>
 		</dependency>
 	</dependencies>
 
@@ -153,4 +154,42 @@
 
 		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>deploy</id>
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-enforcer-plugin</artifactId>
+						<version>1.4.1</version>
+
+						<executions>
+							<execution>
+								<id>enforce-no-snapshots</id>
+
+								<goals>
+									<goal>enforce</goal>
+								</goals>
+
+								<configuration>
+									<fail>true</fail>
+
+									<rules>
+										<requireReleaseDeps>
+											<failWhenParentIsSnapshot>false</failWhenParentIsSnapshot>
+											<message>No SNAPSHOT dependencies allowed!</message>
+										</requireReleaseDeps>
+									</rules>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 </project>
