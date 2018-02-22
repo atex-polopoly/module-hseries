@@ -75,11 +75,7 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
-				<groupId>com.atex.gong</groupId>
-				<artifactId>nosql-beans</artifactId>
-				<version>2.6</version>
-		</dependency>
+
 	</dependencies>
 
 	<distributionManagement>
