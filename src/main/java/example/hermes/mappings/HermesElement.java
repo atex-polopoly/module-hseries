@@ -14,6 +14,7 @@ public class HermesElement{
 	private String hermesVariant;
 	private String hermesLevelId;
 	private String resourceContentId;
+	private String expPubDate;
 	private int statusId;
 	private String status;
 	private String printName;
@@ -50,7 +51,7 @@ public class HermesElement{
 		}
 		this.metadata  = metadata;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -99,24 +100,33 @@ public class HermesElement{
 		this.resourceContentId = resourceContentId;
 	}
 
+
+	public String getExpPubDate() {
+		return expPubDate;
+	}
+
+	public void setExpPubDate(String expPubDate) {
+		this.expPubDate = expPubDate;
+	}
+
 	public Map<String, String> getMetadata() {
 		return metadata;
 	}
 	public void setMetadata(Map<String, String> metadata) {
 		this.metadata = metadata;
 	}
-    public int getStatusId() {
-            return statusId;
-    }
-    public void setStatusId(int statusId) {
-            this.statusId = statusId;
-    }
-    public String getStatus() {
-            return status;
-    }
-    public void setStatus(String status) {
-            this.status = status;
-    }
+	public int getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(int statusId) {
+		this.statusId = statusId;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
 	public String getPrintName() {
 		return printName;
