@@ -54,7 +54,7 @@ public class  DamContentHermesComposer  implements ContentComposer<Object, Objec
 			String host = getHost(request);
 			LOGGER.log(Level.FINE, "POLOPOLY HOST", host);
 			
-			String url = host + "/dam/content/galleryurl?contentId=" + result.getContentId().getKey();
+			String url = host + "/onecms/dam/content/galleryurl?contentId=" + result.getContentId().getKey();
 			LOGGER.log(Level.FINE, "PREVIEW URL", url);
 			
 			String preview = "";

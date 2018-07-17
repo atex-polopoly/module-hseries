@@ -22,7 +22,7 @@ public class DamContentPolopolyPreviewComposer implements ContentComposer<Object
 		String host = getHost(request);
 		LOGGER.log(Level.FINE, "POLOPOLY HOST", host);
 		
-		String url = host + "/dam/content/getpreviewurl?type=object&contentId=" + result.getContentId().getDelegationId()+":"+result.getContentId().getKey();
+		String url = host + "/onecms/dam/content/getpreviewurl?type=object&contentId=" + result.getContentId().getDelegationId()+":"+result.getContentId().getKey();
 		LOGGER.log(Level.FINE, "PREVIEW URL", url);
 		
 		String preview = "";
