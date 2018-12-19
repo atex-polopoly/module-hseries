@@ -42,7 +42,7 @@
 	</scm>
 
 	<properties>
-		<polopoly.version>10.16.7</polopoly.version>
+		<polopoly.version>10.18.0</polopoly.version>
 	</properties>
 
 	<dependencies>
