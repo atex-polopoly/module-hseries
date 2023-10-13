@@ -1,3 +1,6 @@
+# This is deprecated! it has been moved inside desk/desk-hseries-module
+
+
 module-hseries
 ==============
 
