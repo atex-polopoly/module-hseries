@@ -35,7 +35,15 @@ public class HermesElementAspect {
 
 	private int hermesContentType;
 	private List<HermesElement> elements = new ArrayList<HermesElement>();
+	private String hermesPageFormat;
 
+	public String getHermesPageFormat() {
+		return hermesPageFormat;
+	}
+
+	public void setHermesPageFormat(String hermesPageFormat) {
+		this.hermesPageFormat = hermesPageFormat;
+	}
 
 	public int getHermesContentType() {
 		return hermesContentType;
